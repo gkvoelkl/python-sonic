@@ -1,3 +1,4 @@
+
 # python-sonic - Programming Music with Python, Sonic Pi or Supercollider
 
 Python-Sonic is a simple Python interface for Sonic Pi, which is a real great music software created by Sam Aaron (http://sonic-pi.net). 
@@ -19,7 +20,7 @@ But no debugging now or help on how to install it on your system.
 ## Limitations
 
 * You have to start _Sonic Pi_ first before you can use it with python-sonic
-* Only the notes from C5 to C6
+* Only the notes from C3 to C6
 
 ## Examples
 
@@ -91,6 +92,113 @@ play(57)
 sleep(0.25)
 ```
 
+ADSR *(Attack, Decay, Sustain and Release)* Envelope
+
+
+```python
+play (60, attack=0.5, decay=1, sustain_level=0.4, sustain=2, release=0.5) 
+sleep(4)
+```
+
+Play some samples
+
+
+```python
+sample(AMBI_LUNAR_LAND, amp=0.5)
+```
+
+
+```python
+sample(LOOP_AMEN,pan=-1)
+sleep(0.877)
+sample(LOOP_AMEN,pan=1)
+```
+
+
+```python
+sample(LOOP_AMEN,rate=0.5)
+```
+
+
+```python
+sample(LOOP_AMEN,rate=1.5)
+```
+
+
+```python
+sample(LOOP_AMEN,rate=-1)#back
+```
+
+
+```python
+sample(DRUM_CYMBAL_OPEN,attack=0.01,sustain=0.3,release=0.1)
+```
+
+
+```python
+sample(LOOP_AMEN,start=0.5,finish=0.8,rate=-0.2,attack=0.3,release=1)
+```
+
+Play some random notes
+
+
+```python
+import random
+
+for i in range(5):
+    play(random.randrange(50, 100))
+    sleep(0.5)
+```
+
+
+```python
+for i in range(3):
+    play(random.choice([C5,E5,G5]))
+    sleep(1)
+```
+
+An infinite loop and if
+
+
+```python
+while True:
+  if one_in(2):
+    sample(DRUM_HEAVY_KICK)
+    sleep(0.5)
+  else:
+    sample(DRUM_CYMBAL_CLOSED)
+    sleep(0.25)
+```
+
+More than one sound - threading
+
+
+```python
+from psonic import *
+from threading import Thread
+
+def bass_sound():
+    c = Chord(E3, M7)
+    while True:
+        use_synth(PROPHET)
+        play(c.choose(), release=0.6)
+        sleep(0.5)
+
+def snare_sound():
+    while True:
+        sample(ELEC_SNARE)
+        sleep(1)
+
+bass_thread = Thread(target=bass_sound)
+snare_thread = Thread(target=snare_sound)
+
+bass_thread.start()
+snare_thread.start()
+
+while True:
+    pass
+```
+
 ## More Informations
 
 ### Sonic Pi
@@ -105,7 +213,10 @@ sleep(0.25)
 
 ..
 
+## Sources
 
-```python
+Joe Armstrong: Connecting Erlang to the Sonic Pi http://joearms.github.io/2015/01/05/Connecting-Erlang-to-Sonic-Pi.html
 
-```
+Joe Armstrong: Controlling Sound with OSC Messages http://joearms.github.io/2016/01/29/Controlling-Sound-with-OSC-Messages.html
+
+..
