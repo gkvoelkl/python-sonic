@@ -1,35 +1,40 @@
+#The MIT License (MIT)
+#
+#Copyright (c) 2016 G. Völkl
+#
+#Permission is hereby granted, free of charge, to any person obtaining a copy
+#of this software and associated documentation files (the "Software"), to deal
+#in the Software without restriction, including without limitation the rights
+#to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#copies of the Software, and to permit persons to whom the Software is
+#furnished to do so, subject to the following conditions:
+#
+#The above copyright notice and this permission notice shall be included in all
+#copies or substantial portions of the Software.
+#
+#THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#SOFTWARE.
 import random
 import time
 
-import sys
-
-from pythonosc import osc_message_builder #osc support
+from pythonosc import osc_message_builder  # osc support
 from pythonosc import udp_client
 
 __debug = False
 
+
 ## Base Classes ##
-
-class Note:
-    """
-    Note
-    """
-    all = {}
-
-    def __init__(self,name,midi):
-        self.name = name
-        self.midi = midi
-
-        if not self.midi in Note.all : Note.all[self.midi] = self
-
-    def __add__(self, other):
-        return Note.all[self.midi + other]
 
 class Synth:
     """
     Synthesizer
     """
-    def __init__(self,name):
+    def __init__(self, name):
         self.name = name
 
 
@@ -37,7 +42,7 @@ class Sample:
     """
     Sample
     """
-    def __init__(self,name):
+    def __init__(self, name):
         self.name = name
 
 
@@ -45,69 +50,113 @@ class ChordQuality:
     """
     Chord Quality
     """
-    def __init__(self,name,inter):
+    def __init__(self, name, inter):
         self.name = name
         self.inter = inter
 
 
 ## Notes ##
-C3 = Note('C3',48)
-Cs3 = Note('Cs3',49)
+C2 = 36
+Cs2 = 37
+Db2 = Cs2
+D2 = 38
+Ds2 = 39
+Eb2 = Ds2
+E2 = 40
+F2 = 41
+Fs2 = 42
+Gb2 = Fs2
+G2 = 43
+Gs2 = 44
+Ab2 = Gs2
+A2 = 45
+As2 = 46
+Bb2 = As2
+B3 = 47
+C3 = 48
+Cs3 = 49
 Db3 = Cs3
-D3 = Note('D3',50)
-Ds3 = Note('Ds3',51)
+D3 = 50
+Ds3 = 51
 Eb3 = Ds3
-E3 = Note('E3',52)
-F3 = Note('F3',53)
-Fs3 = Note('Fs3',54)
+E3 = 52
+F3 = 53
+Fs3 = 54
 Gb3 = Fs3
-G3 = Note('G3',55)
-Gs3 = Note('Gs3',56)
+G3 = 55
+Gs3 = 56
 Ab3 = Gs3
-A3 = Note('A3',57)
-As3 = Note('As3',58)
+A3 = 57
+As3 = 58
 Bb3 = As3
-B3 = Note('B3',59)
-C4 = Note('C4',60)
-Cs4 = Note('Cs4',61)
+B3 = 59
+C4 = 60
+Cs4 = 61
 Db4 = Cs4
-D4 = Note('D4',62)
-Ds4 = Note('Ds4',63)
+D4 = 62
+Ds4 = 63
 Eb4 = Ds4
-E4 = Note('E4',64)
-F4 = Note('F4',65)
-Fs4 = Note('Fs4',66)
+E4 = 64
+F4 = 65
+Fs4 = 66
 Gb4 = Fs4
-G4 = Note('G4',67)
-Gs4 = Note('Gs4',68)
+G4 = 67
+Gs4 = 68
 Ab4 = Gs4
-A4 = Note('A4',69)
-As4 = Note('As4',70)
+A4 = 69
+As4 = 70
 Bb4 = As4
-B4 = Note('B4',71)
-C5 = Note('C5',72)
-Cs5 = Note('Cs5',73)
+B4 = 71
+C5 = 72
+Cs5 = 73
 Db5 = Cs5
-D5 = Note('D5',74)
-Ds5 = Note('Ds5',75)
+D5 = 74
+Ds5 = 75
 Eb5 = Ds5
-E5 = Note('E5',76)
-F5 = Note('F5',77)
-Fs5 = Note('Fs5',78)
+E5 = 76
+F5 = 77
+Fs5 = 78
 Gb5 = Fs5
-G5 = Note('G5',79)
-Gs5 = Note('Gs5',80)
+G5 = 79
+Gs5 = 80
 Ab5 = Gs5
-A5 = Note('A5',81)
-As5 = Note('As5',82)
+A5 = 81
+As5 = 82
 Bb5 = As5
-B5 = Note('B5',83)
-C6 = Note('C6',84)
+B5 = 83
+C6 = 84
 
-R = Note('rest',0)
-
+R = 0
 
 ## Synthezier ##
+DULL_BELL = Synth('dull_bell')
+PRETTY_BELL = Synth('pretty_bell')
+SQUARE = Synth('square')
+PULSE = Synth('pulse')
+SUBPULSE = Synth('subpulse')
+DTRI = Synth('dtri')
+DPULSE = Synth('dpulse')
+FM = Synth('fm')
+MOD_FM = Synth('mod_fm')
+MOD_SAW = Synth('mod_saw')
+MOD_DSAW = Synth('mod_dsaw')
+MOD_SINE = Synth('mod_sine')
+MOD_TRI = Synth('mod_tri')
+MOD_PULSE = Synth('mod_pulse')
+SUPERSAW = Synth('supersaw')
+HOOVER = Synth('hoover')
+SYNTH_VIOLIN = Synth('synth_violin')
+PLUCK = Synth('pluck')
+PIANO = Synth('piano')
+GROWL = Synth('growl')
+DARK_AMBIENCE = Synth('dark_ambience')
+DARK_SEA_HORN = Synth('dark_sea_horn')
+HOLLOW = Synth('hollow')
+ZAWA = Synth('zawa')
+NOISE = Synth('noise')
+GNOISE = Synth('gnoise')
+BNOISE = Synth('bnoise')
+CNOISE = Synth('cnoise')
 DSAW = Synth('dsaw')
 TB303 = Synth('tb303')
 BLADE = Synth('blade')
@@ -116,11 +165,234 @@ SAW = Synth('saw')
 BEEP = Synth('beep')
 TRI = Synth('tri')
 
-## Scale Mode ##
-MINOR_PENTATONIC = "minor pentatonic"
+## Scale Mode (from sonic pi)##
+DIATONIC = 'diatonic'
+IONIAN = 'ionian'
+MAJOR = 'major'
+DORIAN = 'dorian'
+PHRYGIAN = 'phrygian'
+LYDIAN = 'lydian'
+MIXOLYDIAN = 'mixolydian'
+AEOLIAN = 'aeolian'
+MINOR = 'minor'
+LOCRIAN = 'locrian'
+HEX_MAJOR6 = 'hex_major6'
+HEX_DORIAN = 'hex_dorian'
+HEX_PHRYGIAN = 'hex_phrygian'
+HEX_MAJOR7 = 'hex_major7'
+HEX_SUS = 'hex_sus'
+HEX_AEOLIAN = 'hex_aeolian'
+MINOR_PENTATONIC = 'minor_pentatonic'
+YU = 'yu'
+MAJOR_PENTATONIC = 'major_pentatonic'
+GONG = 'gong'
+EGYPTIAN = 'egyptian'
+SHANG = 'shang'
+JIAO = 'jiao'
+ZHI = 'zhi'
+RITUSEN = 'ritusen'
+WHOLE_TONE = 'whole_tone'
+WHOLE = 'whole'
+CHROMATIC = 'chromatic'
+HARMONIC_MINOR = 'harmonic_minor'
+MELODIC_MINOR_ASC = 'melodic_minor_asc'
+HUNGARIAN_MINOR = 'hungarian_minor'
+OCTATONIC = 'octatonic'
+MESSIAEN1 = 'messiaen1'
+MESSIAEN2 = 'messiaen2'
+MESSIAEN3 = 'messiaen3'
+MESSIAEN4 = 'messiaen4'
+MESSIAEN5 = 'messiaen5'
+MESSIAEN6 = 'messiaen6'
+MESSIAEN7 = 'messiaen7'
+SUPER_LOCRIAN = 'super_locrian'
+HIRAJOSHI = 'hirajoshi'
+KUMOI = 'kumoi'
+NEAPLOLITAN_MAJOR = 'neapolitan_major'
+BARTOK = 'bartok'
+BHAIRAV = 'bhairav'
+LOCRIAN_MAJOR = 'locrian_major'
+AHIRBHAIRAV = 'ahirbhairav'
+ENIGMATIC = 'enigmatic'
+NEAPLOLITAN_MINOR = 'neapolitan_minor'
+PELOG = 'pelog'
+AUGMENTED2 = 'augmented2'
+SCRIABIN = 'scriabin'
+HARMONIC_MAJOR = 'harmonic_major'
+MELODIC_MINOR_DESC = 'melodic_minor_desc'
+ROMANIAN_MINOR = 'romanian_minor'
+HINDU = 'hindu'
+IWATO = 'iwato'
+MELODIC_MINOR = 'melodic_minor'
+DIMISHED2 = 'diminished2'
+MARVA = 'marva'
+MELODIC_MAJOR = 'melodic_major'
+INDIAN = 'indian'
+SPANISH = 'spanish'
+PROMETHEUS = 'prometheus'
+DIMISHED = 'diminished'
+TODI = 'todi'
+LEADING_WHOLE = 'leading_whole'
+AUGMENTED = 'augmented'
+PRUVI = 'purvi'
+CHINESE = 'chinese'
+LYDIAN_MINOR = 'lydian_minor'
+I = 'i'
+II = 'ii'
+III = 'iii'
+IV = 'iv'
+V = 'v'
+VI = 'vi'
+VII = 'vii'
+VIII = 'viii'
+_ionian_sequence = [2, 2, 1, 2, 2, 2, 1]
+_hex_sequence = [2, 2, 1, 2, 2, 3]
+_pentatonic_sequence = [3, 2, 2, 3, 2]
 
-## Chord Quality ##
-M7 = ChordQuality('m7',[3,4,3])
+_SCALE_MODE = {
+    'diatonic': _ionian_sequence,
+    'ionian': _ionian_sequence,
+    'major': _ionian_sequence,
+    'dorian': _ionian_sequence[1:]+_ionian_sequence[:1], #rotate 1
+    'phrygian': _ionian_sequence[2:]+_ionian_sequence[:2], #rotate(2)
+    'lydian': _ionian_sequence[3:]+_ionian_sequence[:3], #rotate(3)
+    'mixolydian': _ionian_sequence[4:]+_ionian_sequence[:4], #rotate(4)
+    'aeolian': _ionian_sequence[5:]+_ionian_sequence[:5], #rotate(5)
+    'minor': _ionian_sequence[5:]+_ionian_sequence[:5], #rotate(5)
+    'locrian': _ionian_sequence[6:]+_ionian_sequence[:6], #rotate(6)
+    'hex_major6': _hex_sequence,
+    'hex_dorian': _hex_sequence[1:]+_hex_sequence[:1], #rotate(1)
+    'hex_phrygian': _hex_sequence[2:]+_hex_sequence[:2], #rotate(2)
+    'hex_major7': _hex_sequence[3:]+_hex_sequence[:3], #rotate(3)
+    'hex_sus': _hex_sequence[4:]+_hex_sequence[:4], #rotate(4)
+    'hex_aeolian': _hex_sequence[5:]+_hex_sequence[:5], #rotate(5)
+    'minor_pentatonic': _pentatonic_sequence,
+    'yu': _pentatonic_sequence,
+    'major_pentatonic': _pentatonic_sequence[1:]+_pentatonic_sequence[:1], #rotate(1)
+    'gong': _pentatonic_sequence[1:]+_pentatonic_sequence[:1], #rotate(1)
+    'egyptian': _pentatonic_sequence[2:]+_pentatonic_sequence[:2], #rotate(2)
+    'shang': _pentatonic_sequence[2:]+_pentatonic_sequence[:2], #rotate(2)
+    'jiao': _pentatonic_sequence[3:]+_pentatonic_sequence[:3], #rotate(3)
+    'zhi': _pentatonic_sequence[4:]+_pentatonic_sequence[:4], #rotate(4)
+    'ritusen': _pentatonic_sequence[4:]+_pentatonic_sequence[:4], #rotate(4)
+    'whole_tone': [2, 2, 2, 2, 2, 2],
+    'whole': [2, 2, 2, 2, 2, 2],
+    'chromatic': [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    'harmonic_minor': [2, 1, 2, 2, 1, 3, 1],
+    'melodic_minor_asc': [2, 1, 2, 2, 2, 2, 1],
+    'hungarian_minor': [2, 1, 3, 1, 1, 3, 1],
+    'octatonic': [2, 1, 2, 1, 2, 1, 2, 1],
+    'messiaen1': [2, 2, 2, 2, 2, 2],
+    'messiaen2': [1, 2, 1, 2, 1, 2, 1, 2],
+    'messiaen3': [2, 1, 1, 2, 1, 1, 2, 1, 1],
+    'messiaen4': [1, 1, 3, 1, 1, 1, 3, 1],
+    'messiaen5': [1, 4, 1, 1, 4, 1],
+    'messiaen6': [2, 2, 1, 1, 2, 2, 1, 1],
+    'messiaen7': [1, 1, 1, 2, 1, 1, 1, 1, 2, 1],
+    'super_locrian': [1, 2, 1, 2, 2, 2, 2],
+    'hirajoshi': [2, 1, 4, 1, 4],
+    'kumoi': [2, 1, 4, 2, 3],
+    'neapolitan_major': [1, 2, 2, 2, 2, 2, 1],
+    'bartok': [2, 2, 1, 2, 1, 2, 2],
+    'bhairav': [1, 3, 1, 2, 1, 3, 1],
+    'locrian_major': [2, 2, 1, 1, 2, 2, 2],
+    'ahirbhairav': [1, 3, 1, 2, 2, 1, 2],
+    'enigmatic': [1, 3, 2, 2, 2, 1, 1],
+    'neapolitan_minor': [1, 2, 2, 2, 1, 3, 1],
+    'pelog': [1, 2, 4, 1, 4],
+    'augmented2': [1, 3, 1, 3, 1, 3],
+    'scriabin': [1, 3, 3, 2, 3],
+    'harmonic_major': [2, 2, 1, 2, 1, 3, 1],
+    'melodic_minor_desc': [2, 1, 2, 2, 1, 2, 2],
+    'romanian_minor': [2, 1, 3, 1, 2, 1, 2],
+    'hindu': [2, 2, 1, 2, 1, 2, 2],
+    'iwato': [1, 4, 1, 4, 2],
+    'melodic_minor': [2, 1, 2, 2, 2, 2, 1],
+    'diminished2': [2, 1, 2, 1, 2, 1, 2, 1],
+    'marva': [1, 3, 2, 1, 2, 2, 1],
+    'melodic_major': [2, 2, 1, 2, 1, 2, 2],
+    'indian': [4, 1, 2, 3, 2],
+    'spanish': [1, 3, 1, 2, 1, 2, 2],
+    'prometheus': [2, 2, 2, 5, 1],
+    'diminished': [1, 2, 1, 2, 1, 2, 1, 2],
+    'todi': [1, 2, 3, 1, 1, 3, 1],
+    'leading_whole': [2, 2, 2, 2, 2, 1, 1],
+    'augmented': [3, 1, 3, 1, 3, 1],
+    'purvi': [1, 3, 2, 1, 1, 3, 1],
+    'chinese': [4, 2, 1, 4, 1],
+    'lydian_minor': [2, 2, 2, 1, 1, 2, 2],
+    'i': _ionian_sequence,
+    'ii': _ionian_sequence[1:]+_ionian_sequence[:1], #rotate(1)
+    'iii': _ionian_sequence[2:]+_ionian_sequence[:2], #rotate(2)
+    'iv': _ionian_sequence[3:]+_ionian_sequence[:3], #rotate(3)
+    'v': _ionian_sequence[4:]+_ionian_sequence[:4], #rotate(4)
+    'vi': _ionian_sequence[5:]+_ionian_sequence[:5], #rotate(5)
+    'vii': _ionian_sequence[6:]+_ionian_sequence[:6], #rotate(6),
+    'viii': _ionian_sequence[7:]+_ionian_sequence[:7]} #rotate(7)
+
+## Chord Quality (from sonic pi) ##
+MAJOR7 = "major7"
+DOM7 = "dom7"
+MINOR7 = "minor7"
+AUG = "aug"
+DIM = "dim"
+DIM7 = "dim7"
+
+_CHORD_QUALITY = {
+    'major': [0, 4, 7],
+    'minor': [0, 3, 7],
+    'major7': [0, 4, 7, 11],
+    'dom7': [0, 4, 7, 10],
+    'minor7': [0, 3, 7, 10],
+    'aug': [0, 4, 8],
+    'dim': [0, 3, 6],
+    'dim7': [0, 3, 6, 9],
+    '1': [0],
+    "5": [0, 7],
+    "+5": [0, 4, 8],
+    "m+5": [0, 3, 8],
+    "sus2": [0, 2, 7],
+    "sus4": [0, 5, 7],
+    "6": [0, 4, 7, 9],
+    "m6": [0, 3, 7, 9],
+    "7sus2": [0, 2, 7, 10],
+    "7sus4": [0, 5, 7, 10],
+    "7-5": [0, 4, 6, 10],
+    "m7-5": [0, 3, 6, 10],
+    "7+5": [0, 4, 8, 10],
+    "m7+5": [0, 3, 8, 10],
+    "9": [0, 4, 7, 10, 14],
+    "m9": [0, 3, 7, 10, 14],
+    "m7+9": [0, 3, 7, 10, 14],
+    "maj9": [0, 4, 7, 11, 14],
+    "9sus4": [0, 5, 7, 10, 14],
+    "6*9": [0, 4, 7, 9, 14],
+    "m6*9": [0, 3, 9, 7, 14],
+    "7-9": [0, 4, 7, 10, 13],
+    "m7-9": [0, 3, 7, 10, 13],
+    "7-10": [0, 4, 7, 10, 15],
+    "9+5": [0, 10, 13],
+    "m9+5": [0, 10, 14],
+    "7+5-9": [0, 4, 8, 10, 13],
+    "m7+5-9": [0, 3, 8, 10, 13],
+    "11": [0, 4, 7, 10, 14, 17],
+    "m11": [0, 3, 7, 10, 14, 17],
+    "maj11": [0, 4, 7, 11, 14, 17],
+    "11+": [0, 4, 7, 10, 14, 18],
+    "m11+": [0, 3, 7, 10, 14, 18],
+    "13": [0, 4, 7, 10, 14, 17, 21],
+    "m13": [0, 3, 7, 10, 14, 17, 21],
+    "M": [0, 4, 7],
+    "m": [0, 3, 7],
+    "7": [0, 4, 7, 10],
+    "M7": [0, 4, 7, 11],
+    "m7": [0, 3, 7],
+    "augmented": [0, 4, 8],
+    "a": [0, 4, 8],
+    "diminished": [0, 3, 6],
+    "i": [0, 3, 6],
+    "diminished7": [0, 3, 6, 9],
+    "i7": [0, 3, 6, 9]}
 
 ## Sample ##
 
@@ -182,7 +454,6 @@ MISC_BURP = Sample('misc_burp')
 ## Percurssive Sounds
 PERC_BELL = Sample('perc_bell')
 
-
 ## Ambient Sounds
 AMBI_SOFT_BUZZ = Sample('ambi_soft_buzz')
 AMBI_SWOOSH = Sample('ambi_swoosh')
@@ -205,15 +476,28 @@ BASS_VOXY_C = Sample('bass_voxy_c')
 BASS_VOXY_HIT_C = Sample('bass_voxy_hit_c')
 BASS_DNB_F = Sample('bass_dnb_f')
 
+BD_808 = Sample('bd_808')
+BD_ADA = Sample('bd_ada')
+BD_BOOM = Sample('bd_boom')
+BD_FAT = Sample('bd_fat')
+BD_GAS = Sample('bd_gas')
+BD_HAUS = Sample('bd_haus')
+BD_KLUB = Sample('bd_klub')
+BD_PURE = Sample('bd_pure')
+BD_SONE = Sample('bd_sone')
+BD_TEK = Sample('bd_tek')
+BD_ZOME = Sample('bd_zome')
+BD_ZUM = Sample('bd_zum')
+
 ## Sounds for Looping
 LOOP_INDUSTRIAL = Sample('loop_industrial')
 LOOP_COMPUS = Sample('loop_compus')
 LOOP_AMEN = Sample('loop_amen')
 LOOP_AMEN_FULL = Sample('loop_amen_full')
 
-
 ## Module attributes ##
 _current_synth = BEEP
+
 
 ## Module methodes ##
 def use_synth(synth):
@@ -221,13 +505,14 @@ def use_synth(synth):
     _current_synth = synth
 
 
-def play(note, attack=None, decay=None, sustain_level=None, sustain=None, release=None, cutoff=None, amp=None, pan=None):
+def play(note, attack=None, decay=None, sustain_level=None, sustain=None, release=None, cutoff=None,
+         cutoff_attack=None, amp=None, pan=None):
     parameters = []
     parameter = ''
-    command = ''
 
     if attack is not None: parameters.append('attack: {0}'.format(attack))
-    if decay  is not None: parameters.append('decay: {0}'.format(decay))
+    if cutoff_attack is not None: parameters.append('cutoff_attack: {0}'.format(cutoff_attack))
+    if decay is not None: parameters.append('decay: {0}'.format(decay))
     if sustain_level is not None: parameters.append('sustain_level: {0}'.format(sustain_level))
     if sustain is not None: parameters.append('sustain: {0}'.format(sustain))
     if release is not None: parameters.append('release: {0}'.format(release))
@@ -236,19 +521,41 @@ def play(note, attack=None, decay=None, sustain_level=None, sustain=None, releas
     if amp is not None: parameters.append('amp: {0}'.format(amp))
     if pan is not None: parameters.append('pan: {0}'.format(pan))
 
-    if len(parameters)>0: parameter = ',' + ','.join(parameters)
+    if len(parameters) > 0: parameter = ',' + ','.join(parameters)
 
-    if type(note) == Note :
-        command = 'play :{0}{1}'.format(note.name,parameter)
-    else:
-        command = 'play {0}{1}'.format(note,parameter)
+    command = 'play {0}{1}'.format(note, parameter)
 
     command = 'use_synth :{0}\n'.format(_current_synth.name) + command
     _debug('play command={}'.format(command))
     synthServer.run(command)
 
 
-def sample(sample, rate=None,attack=None,sustain=None,release=None,start=None,finish=None, amp=None, pan=None):
+def play_pattern_timed(notes, times, release=None):
+    """
+    play notes
+    :param notes:
+    :param times:
+    :return:
+    """
+    if not type(notes) is list: notes = [notes]
+    if not type(times) is list: times = [times]
+
+    for t in times:
+        for i in notes:
+            play(i,release=release)
+            sleep(t)
+
+
+def play_pattern(notes):
+    """
+
+    :param notes:
+    :return:
+    """
+    play_pattern_timed(notes, 1)
+
+
+def sample(sample, rate=None, attack=None, sustain=None, release=None, start=None, finish=None, amp=None, pan=None):
     parameters = []
     parameter = ''
     command = ''
@@ -262,12 +569,12 @@ def sample(sample, rate=None,attack=None,sustain=None,release=None,start=None,fi
     if amp is not None: parameters.append('amp: {0}'.format(amp))
     if pan is not None: parameters.append('pan: {0}'.format(pan))
 
-    if len(parameters)>0: parameter = ',' + ','.join(parameters)
+    if len(parameters) > 0: parameter = ',' + ','.join(parameters)
 
-    if type(sample) == Sample :
-        command = 'sample :{0}{1}'.format(sample.name,parameter)
+    if type(sample) == Sample:
+        command = 'sample :{0}{1}'.format(sample.name, parameter)
     else:
-        command = 'sample "{0}"{1}'.format(sample,parameter)
+        command = 'sample "{0}"{1}'.format(sample, parameter)
 
     _debug('sample command={}'.format(command))
     synthServer.run(command)
@@ -282,13 +589,58 @@ def sleep(duration):
     time.sleep(duration)
     _debug('sleep', duration)
 
+
 def one_in(max):
     """
     random function  returns True in one of max cases
     :param max:
     :return: boolean
     """
-    return random.randint(1,max) == 1
+    return random.randint(1, max) == 1
+
+
+def chord(root_note, chord_quality):
+    """
+    Generates a list of notes of a chord
+
+    :param root_note:
+    :param chord_quality:
+    :return: list
+    """
+    result = []
+    n = root_note
+
+    half_tone_steps = _CHORD_QUALITY[chord_quality]
+
+    for i in half_tone_steps:
+        n = n + i
+        result.append(n)
+
+    return result
+
+
+def scale(root_note, scale_mode, num_octaves=1):
+    """
+    Genarates a liste of notes of scale
+
+    :param root_note:
+    :param scale_mode:
+    :param num_octaves:
+    :return: list
+    """
+    result = []
+    n = root_note
+
+    half_tone_steps = _SCALE_MODE[scale_mode]
+
+    for o in range(num_octaves):
+        n = root_note + o * 12
+        result.append(n)
+        for i in half_tone_steps:
+            n = n + i
+            result.append(n)
+
+    return result
 
 ## Compound classes ##
 
@@ -296,45 +648,23 @@ class Ring:
     """
     ring buffer
     """
-    def __init__(self,data):
+
+    def __init__(self, data):
         self.data = data
         self.index = -1
 
-    def __iter__(self): #return Iterator
+    def __iter__(self):  # return Iterator
         return self
 
-    def __next__(self): #return Iterator next element
-        self.index +=1
+    def __next__(self):  # return Iterator next element
+        self.index += 1
         if self.index == len(self.data):
             self.index = 0
         return self.data[self.index]
 
-    def choose(self): #random choose
+    def choose(self):  # random choose
         return random.choice(self.data)
 
-class Scale(Ring):
-    """
-    Scale
-    """
-    def __init__(self,basenote,mode):
-        super(Scale,self).__init__([basenote, G3, A3])
-
-    def shuffle(self):
-        random.shuffle(self.data)
-        return self
-
-
-class Chord(Ring):
-    """
-    Chord
-    """
-    def __init__(self,root_note,chord_quality):
-        notes = [root_note]
-        n = root_note
-        for i in chord_quality.inter:
-            n = n + i
-            notes.append(n)
-        super(Chord,self).__init__(notes)
 
 ## Connection classes ##
 
@@ -360,11 +690,11 @@ class SonicPi():
         self.send_command(SonicPi.STOP_COMMAND)
 
     def test_connection(self):
-        #OSC::Server.new(PORT)
-        #abort("ERROR: Sonic Pi is not listening on #{PORT} - is it running?")
+        # OSC::Server.new(PORT)
+        # abort("ERROR: Sonic Pi is not listening on #{PORT} - is it running?")
         pass
 
-    def send_command(self,address,argument=''):
+    def send_command(self, address, argument=''):
         msg = osc_message_builder.OscMessageBuilder(address=address)
         msg.add_arg('SONIC_PI_PYTHON')
         msg.add_arg(argument)
@@ -372,21 +702,15 @@ class SonicPi():
 
         self.client.send(msg)
 
+
 synthServer = SonicPi()
+
 
 ## system functions ##
 
-def _debug(*allargs): #simple debug function for working in different environments
-    if __debug:print(allargs)
+def _debug(*allargs):  # simple debug function for working in different environments
+    if __debug: print(allargs)
 
-
-def _init_notes(): #ToDo: __init__
-    notes = [["C"],["Cs","Db"],["D"],["Ds","Eb"],["E"],["F"],["Fs","Gb"],["G"],["Gs","As"],["A"],["As","Bb"],["B"]]
-    thismodule = sys.modules[__name__]
-    setattr(thismodule,'C5',Note('C5',72))
-
-def _init_module(): #ToDo: __init__
-    #_init_notes()
-    pass
-
-_init_module()
+if __name__ == '__main__':
+    use_synth(SAW)
+    play(C5, amp=2, pan=-1)
