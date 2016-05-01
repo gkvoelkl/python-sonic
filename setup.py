@@ -11,7 +11,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='python-sonic',
-    version='0.1.2',
+    version='0.1.4',
     description='Programming Music with Sonic Pi or Supercollider',
     long_description=long_description,
     url='https://github.com/gkvoelkl/python-sonic',
@@ -44,7 +44,7 @@ setup(
 
     #packages=find_packages(),
     py_modules=['psonic'],
-    install_requires=['pythonosc'],
+    install_requires=['python-osc'],
 
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow
