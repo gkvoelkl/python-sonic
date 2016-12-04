@@ -21,6 +21,7 @@
 #SOFTWARE.
 import random
 import time
+import threading
 
 from pythonosc import osc_message_builder  # osc support
 from pythonosc import udp_client
@@ -53,6 +54,29 @@ class ChordQuality:
     def __init__(self, name, inter):
         self.name = name
         self.inter = inter
+
+class Message:
+    """
+    For sending messages between threads
+    """
+    def __init__(self):
+        self._condition = threading.Condition()
+
+    def cue(self):
+        with self._condition:
+            self._condition.notifyAll()  # Message to threads
+
+    def sync(self):
+        with self._condition:
+            self._condition.wait()  # Wait for message
+
+## Decorator ##
+
+def in_thread(func):
+    def wrapper():
+        _thread = threading.Thread(target=func)
+        _thread.start()
+    return wrapper
 
 
 ## Notes ##
@@ -164,6 +188,15 @@ PROPHET = Synth('prophet')
 SAW = Synth('saw')
 BEEP = Synth('beep')
 TRI = Synth('tri')
+DTRI = Synth('dtri') #Sonic Pi 2.10
+PLUCK = Synth('pluck')
+CHIPLEAD = Synth('chiplead')
+CHIPBASS = Synth('chipbass')
+CHIPNOISE = Synth('chipnoise')
+TECHSAWS = Synth('tech_saws') #Sonic Pi 2.11
+SOUND_IN = Synth('sound_in')
+SOUND_IN_STEREO = Synth('sound_in_stereo')
+
 
 ## Scale Mode (from sonic pi)##
 DIATONIC = 'diatonic'
@@ -415,6 +448,8 @@ DRUM_CYMBAL_CLOSED = Sample('drum_cymbal_closed')
 DRUM_CYMBAL_PEDAL = Sample('drum_cymbal_pedal')
 DRUM_BASS_SOFT = Sample('drum_bass_soft')
 DRUM_BASS_HARD = Sample('drum_bass_hard')
+DRUM_COWBELL = Sample('drum_cowbell')
+DRUM_ROLL = Sample('drum_roll')
 
 ## Electric Sounds
 ELEC_TRIANGLE = Sample('elec_triangle')
@@ -450,9 +485,13 @@ GUIT_E_SLIDE = Sample('guit_e_slide')
 
 ## Miscellaneous Sounds
 MISC_BURP = Sample('misc_burp')
+MISC_CROW = Sample('misc_crow')
+MISC_CINEBOOM = Sample('misc_cineboom')
 
 ## Percurssive Sounds
 PERC_BELL = Sample('perc_bell')
+PERC_SWASH = Sample('perc_swash')
+PERC_TILL = Sample('perc_till')
 
 ## Ambient Sounds
 AMBI_SOFT_BUZZ = Sample('ambi_soft_buzz')
@@ -494,6 +533,44 @@ LOOP_INDUSTRIAL = Sample('loop_industrial')
 LOOP_COMPUS = Sample('loop_compus')
 LOOP_AMEN = Sample('loop_amen')
 LOOP_AMEN_FULL = Sample('loop_amen_full')
+LOOP_SAFARI = Sample('loop_safari')
+LOOP_TABLA = Sample('loop_tabla')
+
+## Tabla
+TABLA_TAS1 = Sample('tabla_tas1')
+TABLA_TAS2 = Sample('tabla_tas2')
+TABLA_TAS3 = Sample('tabla_tas3')
+TABLA_KE1 = Sample('tabla_ke1')
+TABLA_KE2 = Sample('tabla_ke2')
+TABLA_KE3 = Sample('tabla_ke3')
+TABLA_NA = Sample('tabla_na')
+TABLA_NA_O = Sample('tabla_na_o')
+TABLA_TUN1 = Sample('tabla_tun1')
+TABLA_TUN2 = Sample('tabla_tun2')
+TABLA_TUN3 = Sample('tabla_tun3')
+TABLA_TE1 = Sample('tabla_te1')
+TABLA_TE2 = Sample('tabla_te2')
+TABLA_TE_NE = Sample('tabla_te_ne')
+TABLA_TE_M = Sample('tabla_te_m')
+TABLA_GHE1 = Sample('tabla_ghe1')
+TABLA_GHE2 = Sample('tabla_ghe2')
+TABLA_GHE3 = Sample('tabla_ghe3')
+TABLA_GHE4 = Sample('tabla_ghe4')
+TABLA_GHE5 = Sample('tabla_ghe5')
+TABLA_GHE6 = Sample('tabla_ghe6')
+TABLA_GHE7 = Sample('tabla_ghe7')
+TABLA_GHE8 = Sample('tabla_ghe8')
+TABLA_DHEC = Sample('tabla_dhec')
+TABLA_NA_S = Sample('tabla_na_s')
+TABLA_RE = Sample('tabla_re')
+
+
+# Vinyl
+VINYL_BACKSPIN = Sample('vinyl_backspin')
+VINYL_REWIND = Sample('vinyl_rewind')
+VINYL_SCRATCH = Sample('vinyl_scratch')
+VINYL_HISS = Sample('vinyl_hiss')
+
 
 ## Module attributes ##
 _current_synth = BEEP
@@ -555,7 +632,8 @@ def play_pattern(notes):
     play_pattern_timed(notes, 1)
 
 
-def sample(sample, rate=None, attack=None, sustain=None, release=None, start=None, finish=None, amp=None, pan=None):
+def sample(sample, rate=None, attack=None, sustain=None, release=None,beat_stretch=None,
+           start=None, finish=None, amp=None, pan=None):
     parameters = []
     parameter = ''
     command = ''
@@ -564,6 +642,7 @@ def sample(sample, rate=None, attack=None, sustain=None, release=None, start=Non
     if attack is not None: parameters.append('attack: {0}'.format(attack))
     if sustain is not None: parameters.append('sustain: {0}'.format(sustain))
     if release is not None: parameters.append('release: {0}'.format(release))
+    if beat_stretch is not None:parameters.append('beat_stretch: {0}'.format(beat_stretch))
     if start is not None: parameters.append('start: {0}'.format(start))
     if finish is not None: parameters.append('finish: {0}'.format(finish))
     if amp is not None: parameters.append('amp: {0}'.format(amp))
