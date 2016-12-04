@@ -14,7 +14,7 @@ If you like it, use it. If you have some suggestions, tell me
 Installation
 ------------
 
--  First you need Python 3 (https://www.python.org, ) - Python 3.4
+-  First you need Python 3 (https://www.python.org, ) - Python 3.5
    should work, because it's the development environment
 -  Then Sonic Pi (https://sonic-pi.net) - That makes the sound
 -  Modul python-osc (https://pypi.python.org/pypi/python-osc) -
@@ -35,6 +35,16 @@ Limitations
 -  You have to start *Sonic Pi* first before you can use it with
    python-sonic
 -  Only the notes from C2 to C6
+
+Changelog
+---------
+
++------------+---------------------------------------------------------------+
+| Version    |                                                               |
++============+===============================================================+
+| 0.2.0      | Some changes for Sonic Pi 2.11. Simpler multi-threading with  |
+|            | decorator *@in\_thread*. Messaging with *cue* and *sync*.     |
++------------+---------------------------------------------------------------+
 
 Examples
 --------
@@ -155,6 +165,20 @@ Play some random notes
     for i in range(3):
         play(random.choice([C5,E5,G5]))
         sleep(1)
+
+Sample slicing
+
+.. code:: python
+
+    from psonic import *
+    
+    number_of_pieces = 8
+    
+    for i in range(16):
+        s = random.randrange(0,number_of_pieces)/number_of_pieces #sample starts at 0.0 and finishes at 1.0
+        f = s + (1.0/number_of_pieces)
+        sample(LOOP_AMEN,beat_stretch=2,start=s,finish=f)
+        sleep(2.0/number_of_pieces)
 
 An infinite loop and if
 
@@ -282,6 +306,81 @@ you can use *Condition*. One function sends a message with
 *condition.notifyAll* the other waits until the message comes
 *condition.wait*.
 
+More simple with decorator \_\_@in\_thread\_\_
+
+.. code:: python
+
+    from psonic import *
+    from random import choice
+    
+    tick = Message()
+    
+    @in_thread
+    def random_riff():
+        use_synth(PROPHET)
+        sc = scale(E3, MINOR)
+        while True:
+            s = random.choice([0.125,0.25,0.5])
+            tick.sync()
+            for i in range(8):
+                r = random.choice([0.125, 0.25, 1, 2])
+                n = random.choice(sc)
+                co = random.randint(30,100)
+                play(n, release = r, cutoff = co)
+                sleep(s)
+                
+    @in_thread
+    def drums():
+        while True:
+            tick.cue()
+            for i in range(16):
+                r = random.randrange(1,10)
+                sample(DRUM_BASS_HARD, rate=r)
+                sleep(0.125)
+    
+    random_riff()
+    drums()
+    
+    input("Press Enter to continue...")
+
+
+.. parsed-literal::
+
+    Press Enter to continue...
+    
+
+
+
+.. parsed-literal::
+
+    ''
+
+
+
+.. code:: python
+
+    from psonic import *
+    
+    tick = Message()
+    
+    @in_thread
+    def metronom():
+        while True:
+            tick.cue()
+            sleep(1)
+            
+    @in_thread
+    def instrument():
+        while True:
+            tick.sync()
+            sample(DRUM_HEAVY_KICK)
+    
+    metronom()
+    instrument()
+    
+    while True:
+        pass
+
 Play a list of notes
 
 .. code:: python
@@ -321,6 +420,22 @@ Play scales
     play_pattern_timed(scale(C3, MAJOR), 0.125, release = 0.1) 
     play_pattern_timed(scale(C3, MAJOR, num_octaves = 2), 0.125, release = 0.1) 
     play_pattern_timed(scale(C3, MAJOR_PENTATONIC, num_octaves = 2), 0.125, release = 0.1)
+
+The function *scale* returns a list with all notes of a scale. So you
+can use list methodes or functions. For example to play arpeggios
+descending or shuffeld.
+
+.. code:: python
+
+    import random
+    
+    s = scale(C3, MAJOR)
+    s
+
+.. code:: python
+
+    play_pattern_timed(s.reverse(), 0.125, release = 0.1)
+    play_pattern_timed(random.shuffle(s), 0.125, release = 0.1)
 
 Live Loop
 ~~~~~~~~~
