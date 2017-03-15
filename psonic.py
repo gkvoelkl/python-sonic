@@ -773,10 +773,11 @@ class SonicPi():
         # abort("ERROR: Sonic Pi is not listening on #{PORT} - is it running?")
         pass
 
-    def send_command(self, address, argument=''):
+    def send_command(self, address, *args):
         msg = osc_message_builder.OscMessageBuilder(address=address)
         msg.add_arg('SONIC_PI_PYTHON')
-        msg.add_arg(argument)
+        for arg in args:
+            msg.add_arg(arg)
         msg = msg.build()
 
         self.client.send(msg)
