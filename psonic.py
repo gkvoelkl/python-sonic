@@ -1,24 +1,24 @@
-#The MIT License (MIT)
+# The MIT License (MIT)
 #
-#Copyright (c) 2016 G. Völkl
+# Copyright (c) 2016 G. Völkl
 #
-#Permission is hereby granted, free of charge, to any person obtaining a copy
-#of this software and associated documentation files (the "Software"), to deal
-#in the Software without restriction, including without limitation the rights
-#to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#copies of the Software, and to permit persons to whom the Software is
-#furnished to do so, subject to the following conditions:
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
 #
-#The above copyright notice and this permission notice shall be included in all
-#copies or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
 #
-#THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-#IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-#FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-#AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-#LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-#SOFTWARE.
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 import random
 import time
 import threading
@@ -35,6 +35,7 @@ class Synth:
     """
     Synthesizer
     """
+
     def __init__(self, name):
         self.name = name
 
@@ -43,6 +44,7 @@ class Sample:
     """
     Sample
     """
+
     def __init__(self, name):
         self.name = name
 
@@ -51,14 +53,26 @@ class ChordQuality:
     """
     Chord Quality
     """
+
     def __init__(self, name, inter):
         self.name = name
         self.inter = inter
+
+
+class FxName:
+    """
+    FX name
+    """
+
+    def __init__(self, name):
+        self.name = name
+
 
 class Message:
     """
     For sending messages between threads
     """
+
     def __init__(self):
         self._condition = threading.Condition()
 
@@ -70,12 +84,32 @@ class Message:
         with self._condition:
             self._condition.wait()  # Wait for message
 
+
+class Fx:
+    """
+    FX Effects
+    """
+
+    def __init__(self, mode, phase=0.24, probability=0, prob_pos=0):
+        self.mode = mode
+        self.phase = phase
+        self.probability = probability
+        self.prob_pos = prob_pos
+
+    def __enter__(self):
+        pass
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        pass
+
+
 ## Decorator ##
 
 def in_thread(func):
     def wrapper():
         _thread = threading.Thread(target=func)
         _thread.start()
+
     return wrapper
 
 
@@ -96,7 +130,7 @@ Ab2 = Gs2
 A2 = 45
 As2 = 46
 Bb2 = As2
-B3 = 47
+B2 = 47
 C3 = 48
 Cs3 = 49
 Db3 = Cs3
@@ -155,6 +189,7 @@ R = 0
 ## Synthezier ##
 DULL_BELL = Synth('dull_bell')
 PRETTY_BELL = Synth('pretty_bell')
+SINE = Synth('sine')
 SQUARE = Synth('square')
 PULSE = Synth('pulse')
 SUBPULSE = Synth('subpulse')
@@ -188,15 +223,12 @@ PROPHET = Synth('prophet')
 SAW = Synth('saw')
 BEEP = Synth('beep')
 TRI = Synth('tri')
-DTRI = Synth('dtri') #Sonic Pi 2.10
-PLUCK = Synth('pluck')
-CHIPLEAD = Synth('chiplead')
+CHIPLEAD = Synth('chiplead') # Sonic Pi 2.10
 CHIPBASS = Synth('chipbass')
 CHIPNOISE = Synth('chipnoise')
-TECHSAWS = Synth('tech_saws') #Sonic Pi 2.11
+TECHSAWS = Synth('tech_saws')  # Sonic Pi 2.11
 SOUND_IN = Synth('sound_in')
 SOUND_IN_STEREO = Synth('sound_in_stereo')
-
 
 ## Scale Mode (from sonic pi)##
 DIATONIC = 'diatonic'
@@ -286,28 +318,28 @@ _SCALE_MODE = {
     'diatonic': _ionian_sequence,
     'ionian': _ionian_sequence,
     'major': _ionian_sequence,
-    'dorian': _ionian_sequence[1:]+_ionian_sequence[:1], #rotate 1
-    'phrygian': _ionian_sequence[2:]+_ionian_sequence[:2], #rotate(2)
-    'lydian': _ionian_sequence[3:]+_ionian_sequence[:3], #rotate(3)
-    'mixolydian': _ionian_sequence[4:]+_ionian_sequence[:4], #rotate(4)
-    'aeolian': _ionian_sequence[5:]+_ionian_sequence[:5], #rotate(5)
-    'minor': _ionian_sequence[5:]+_ionian_sequence[:5], #rotate(5)
-    'locrian': _ionian_sequence[6:]+_ionian_sequence[:6], #rotate(6)
+    'dorian': _ionian_sequence[1:] + _ionian_sequence[:1],  # rotate 1
+    'phrygian': _ionian_sequence[2:] + _ionian_sequence[:2],  # rotate(2)
+    'lydian': _ionian_sequence[3:] + _ionian_sequence[:3],  # rotate(3)
+    'mixolydian': _ionian_sequence[4:] + _ionian_sequence[:4],  # rotate(4)
+    'aeolian': _ionian_sequence[5:] + _ionian_sequence[:5],  # rotate(5)
+    'minor': _ionian_sequence[5:] + _ionian_sequence[:5],  # rotate(5)
+    'locrian': _ionian_sequence[6:] + _ionian_sequence[:6],  # rotate(6)
     'hex_major6': _hex_sequence,
-    'hex_dorian': _hex_sequence[1:]+_hex_sequence[:1], #rotate(1)
-    'hex_phrygian': _hex_sequence[2:]+_hex_sequence[:2], #rotate(2)
-    'hex_major7': _hex_sequence[3:]+_hex_sequence[:3], #rotate(3)
-    'hex_sus': _hex_sequence[4:]+_hex_sequence[:4], #rotate(4)
-    'hex_aeolian': _hex_sequence[5:]+_hex_sequence[:5], #rotate(5)
+    'hex_dorian': _hex_sequence[1:] + _hex_sequence[:1],  # rotate(1)
+    'hex_phrygian': _hex_sequence[2:] + _hex_sequence[:2],  # rotate(2)
+    'hex_major7': _hex_sequence[3:] + _hex_sequence[:3],  # rotate(3)
+    'hex_sus': _hex_sequence[4:] + _hex_sequence[:4],  # rotate(4)
+    'hex_aeolian': _hex_sequence[5:] + _hex_sequence[:5],  # rotate(5)
     'minor_pentatonic': _pentatonic_sequence,
     'yu': _pentatonic_sequence,
-    'major_pentatonic': _pentatonic_sequence[1:]+_pentatonic_sequence[:1], #rotate(1)
-    'gong': _pentatonic_sequence[1:]+_pentatonic_sequence[:1], #rotate(1)
-    'egyptian': _pentatonic_sequence[2:]+_pentatonic_sequence[:2], #rotate(2)
-    'shang': _pentatonic_sequence[2:]+_pentatonic_sequence[:2], #rotate(2)
-    'jiao': _pentatonic_sequence[3:]+_pentatonic_sequence[:3], #rotate(3)
-    'zhi': _pentatonic_sequence[4:]+_pentatonic_sequence[:4], #rotate(4)
-    'ritusen': _pentatonic_sequence[4:]+_pentatonic_sequence[:4], #rotate(4)
+    'major_pentatonic': _pentatonic_sequence[1:] + _pentatonic_sequence[:1],  # rotate(1)
+    'gong': _pentatonic_sequence[1:] + _pentatonic_sequence[:1],  # rotate(1)
+    'egyptian': _pentatonic_sequence[2:] + _pentatonic_sequence[:2],  # rotate(2)
+    'shang': _pentatonic_sequence[2:] + _pentatonic_sequence[:2],  # rotate(2)
+    'jiao': _pentatonic_sequence[3:] + _pentatonic_sequence[:3],  # rotate(3)
+    'zhi': _pentatonic_sequence[4:] + _pentatonic_sequence[:4],  # rotate(4)
+    'ritusen': _pentatonic_sequence[4:] + _pentatonic_sequence[:4],  # rotate(4)
     'whole_tone': [2, 2, 2, 2, 2, 2],
     'whole': [2, 2, 2, 2, 2, 2],
     'chromatic': [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -355,13 +387,13 @@ _SCALE_MODE = {
     'chinese': [4, 2, 1, 4, 1],
     'lydian_minor': [2, 2, 2, 1, 1, 2, 2],
     'i': _ionian_sequence,
-    'ii': _ionian_sequence[1:]+_ionian_sequence[:1], #rotate(1)
-    'iii': _ionian_sequence[2:]+_ionian_sequence[:2], #rotate(2)
-    'iv': _ionian_sequence[3:]+_ionian_sequence[:3], #rotate(3)
-    'v': _ionian_sequence[4:]+_ionian_sequence[:4], #rotate(4)
-    'vi': _ionian_sequence[5:]+_ionian_sequence[:5], #rotate(5)
-    'vii': _ionian_sequence[6:]+_ionian_sequence[:6], #rotate(6),
-    'viii': _ionian_sequence[7:]+_ionian_sequence[:7]} #rotate(7)
+    'ii': _ionian_sequence[1:] + _ionian_sequence[:1],  # rotate(1)
+    'iii': _ionian_sequence[2:] + _ionian_sequence[:2],  # rotate(2)
+    'iv': _ionian_sequence[3:] + _ionian_sequence[:3],  # rotate(3)
+    'v': _ionian_sequence[4:] + _ionian_sequence[:4],  # rotate(4)
+    'vi': _ionian_sequence[5:] + _ionian_sequence[:5],  # rotate(5)
+    'vii': _ionian_sequence[6:] + _ionian_sequence[:6],  # rotate(6),
+    'viii': _ionian_sequence[7:] + _ionian_sequence[:7]}  # rotate(7)
 
 ## Chord Quality (from sonic pi) ##
 MAJOR7 = "major7"
@@ -564,13 +596,24 @@ TABLA_DHEC = Sample('tabla_dhec')
 TABLA_NA_S = Sample('tabla_na_s')
 TABLA_RE = Sample('tabla_re')
 
-
 # Vinyl
 VINYL_BACKSPIN = Sample('vinyl_backspin')
 VINYL_REWIND = Sample('vinyl_rewind')
 VINYL_SCRATCH = Sample('vinyl_scratch')
 VINYL_HISS = Sample('vinyl_hiss')
 
+## FX
+BITCRUSHER = FxName('bitcrusher')
+COMPRESSOR = FxName('compressor')
+ECHO = FxName('echo')
+FLANGER = FxName('flanger')
+KRUSH = FxName('krush')
+LPF = FxName('lpf')
+PAN = FxName('pan')
+PANSLICER = FxName('panslicer')
+REVERB = FxName('reverb')
+SLICER = FxName('slicer')
+WOBBLE = FxName('wobble')
 
 ## Module attributes ##
 _current_synth = BEEP
@@ -580,6 +623,31 @@ _current_synth = BEEP
 def use_synth(synth):
     global _current_synth
     _current_synth = synth
+
+
+def synth(name, note=None, attack=None, decay=None, sustain_level=None, sustain=None, release=None, cutoff=None,
+          cutoff_attack=None, amp=None, pan=None):
+    parameters = []
+    parameter = ''
+
+    if note is not None: parameters.append('note: {0}'.format(note))
+    if attack is not None: parameters.append('attack: {0}'.format(attack))
+    if cutoff_attack is not None: parameters.append('cutoff_attack: {0}'.format(cutoff_attack))
+    if decay is not None: parameters.append('decay: {0}'.format(decay))
+    if sustain_level is not None: parameters.append('sustain_level: {0}'.format(sustain_level))
+    if sustain is not None: parameters.append('sustain: {0}'.format(sustain))
+    if release is not None: parameters.append('release: {0}'.format(release))
+    if cutoff is not None: parameters.append('cutoff: {0}'.format(cutoff))
+
+    if amp is not None: parameters.append('amp: {0}'.format(amp))
+    if pan is not None: parameters.append('pan: {0}'.format(pan))
+
+    if len(parameters) > 0: parameter = ',' + ','.join(parameters)
+
+    command = 'synth :{0}{1}'.format(name.name, parameter)
+
+    _debug('synth command={}'.format(command))
+    synth_server.synth(command)
 
 
 def play(note, attack=None, decay=None, sustain_level=None, sustain=None, release=None, cutoff=None,
@@ -602,9 +670,8 @@ def play(note, attack=None, decay=None, sustain_level=None, sustain=None, releas
 
     command = 'play {0}{1}'.format(note, parameter)
 
-    command = 'use_synth :{0}\n'.format(_current_synth.name) + command
     _debug('play command={}'.format(command))
-    synthServer.run(command)
+    synth_server.play(command)
 
 
 def play_pattern_timed(notes, times, release=None):
@@ -619,7 +686,7 @@ def play_pattern_timed(notes, times, release=None):
 
     for t in times:
         for i in notes:
-            play(i,release=release)
+            play(i, release=release)
             sleep(t)
 
 
@@ -632,7 +699,7 @@ def play_pattern(notes):
     play_pattern_timed(notes, 1)
 
 
-def sample(sample, rate=None, attack=None, sustain=None, release=None,beat_stretch=None,
+def sample(sample, rate=None, attack=None, sustain=None, release=None, beat_stretch=None,
            start=None, finish=None, amp=None, pan=None):
     parameters = []
     parameter = ''
@@ -642,7 +709,7 @@ def sample(sample, rate=None, attack=None, sustain=None, release=None,beat_stret
     if attack is not None: parameters.append('attack: {0}'.format(attack))
     if sustain is not None: parameters.append('sustain: {0}'.format(sustain))
     if release is not None: parameters.append('release: {0}'.format(release))
-    if beat_stretch is not None:parameters.append('beat_stretch: {0}'.format(beat_stretch))
+    if beat_stretch is not None: parameters.append('beat_stretch: {0}'.format(beat_stretch))
     if start is not None: parameters.append('start: {0}'.format(start))
     if finish is not None: parameters.append('finish: {0}'.format(finish))
     if amp is not None: parameters.append('amp: {0}'.format(amp))
@@ -656,7 +723,7 @@ def sample(sample, rate=None, attack=None, sustain=None, release=None,beat_stret
         command = 'sample "{0}"{1}'.format(sample, parameter)
 
     _debug('sample command={}'.format(command))
-    synthServer.run(command)
+    synth_server.sample(command)
 
 
 def sleep(duration):
@@ -665,7 +732,7 @@ def sleep(duration):
     :param duration:
     :return:
     """
-    time.sleep(duration)
+    synth_server.sleep(duration)
     _debug('sleep', duration)
 
 
@@ -721,6 +788,15 @@ def scale(root_note, scale_mode, num_octaves=1):
 
     return result
 
+def run(command):
+    synth_server.run(command)
+
+def stop():
+    synth_server.stop()
+
+def send_message(message, *parameter):
+    synth_server.send_message(message, *parameter)
+
 ## Compound classes ##
 
 class Ring:
@@ -747,13 +823,14 @@ class Ring:
 
 ## Connection classes ##
 
-class SonicPi():
+class SonicPi:
     """
     Communiction to Sonic Pi
     """
 
     UDP_IP = "127.0.0.1"
     UDP_PORT = 4557
+    UDP_PORT_OSC_MESSAGE = 4559
     GUI_ID = 'SONIC_PI_PYTHON'
 
     RUN_COMMAND = "/run-code"
@@ -761,6 +838,20 @@ class SonicPi():
 
     def __init__(self):
         self.client = udp_client.UDPClient(SonicPi.UDP_IP, SonicPi.UDP_PORT)
+        self.client_for_messages = udp_client.UDPClient(SonicPi.UDP_IP, SonicPi.UDP_PORT_OSC_MESSAGE)
+
+    def sample(self, command):
+        self.run(command)
+
+    def play(self, command):
+        command = 'use_synth :{0}\n'.format(_current_synth.name) + command
+        self.run(command)
+
+    def synth(self, command):
+        self.run(command)
+
+    def sleep(self, duration):
+        time.sleep(duration)
 
     def run(self, command):
         self.send_command(SonicPi.RUN_COMMAND, command)
@@ -776,19 +867,61 @@ class SonicPi():
     def send_command(self, address, argument=''):
         msg = osc_message_builder.OscMessageBuilder(address=address)
         msg.add_arg('SONIC_PI_PYTHON')
-        msg.add_arg(argument)
+        if argument != "":
+            msg.add_arg(argument)
         msg = msg.build()
 
         self.client.send(msg)
 
+    def send_message(self,message, *parameters):
+        msg = osc_message_builder.OscMessageBuilder(message)
+        for p in parameters:
+            msg.add_arg(p)
+        msg = msg.build()
+        self.client_for_messages.send(msg)
 
-synthServer = SonicPi()
+class SonicPiNew:
+    """
+    Communiction to Sonic Pi
+    """
+
+    UDP_IP = "127.0.0.1"
+    UDP_PORT = 4559
+
+    def __init__(self):
+        self.client = udp_client.UDPClient(SonicPiNew.UDP_IP, SonicPiNew.UDP_PORT)
+        self.commandServer = SonicPi()
+        # x= 'live_loop :py do\n  nv=sync "/SENDOSC"\n  puts nv\n  eval(nv[0])\nend'
+        # self.commandServer.run(x)
+
+    def set_OSC_receiver(self, source):
+        self.commandServer.run(source)
+
+    def send(self, address, *message):
+        msg = osc_message_builder.OscMessageBuilder(address)
+        for m in message:
+            msg.add_arg(m)
+        msg = msg.build()
+        self.client.send(msg)
+
+    def sample(self, command):
+        self.send(command)
+
+    def play(self, command):
+        self.send(command)
+
+    def sleep(self, duration):
+        time.sleep(duration)
+
+
+synth_server = SonicPi()
 
 
 ## system functions ##
 
 def _debug(*allargs):  # simple debug function for working in different environments
     if __debug: print(allargs)
+
 
 if __name__ == '__main__':
     use_synth(SAW)

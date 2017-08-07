@@ -11,7 +11,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='python-sonic',
-    version='0.2.0',
+    version='0.3.0',
     description='Programming Music with Sonic Pi or Supercollider',
     long_description=long_description,
     url='https://github.com/gkvoelkl/python-sonic',
@@ -29,6 +29,7 @@ setup(
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
     ],
 
     keywords= [
