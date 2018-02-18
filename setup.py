@@ -34,6 +34,8 @@ setup(
     author_email='gkvoelkl@nelson-games.de',
     packages=[
         'psonic',
+        'psonic.samples',
+        'psonic.samples.loops',
     ],
     license='MIT',
     zip_safe=False,
