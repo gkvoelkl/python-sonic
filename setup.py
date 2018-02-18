@@ -9,6 +9,21 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
+requirements = [
+    'python-osc',
+
+]
+
+setup_requirements = [
+    'pytest-runner',
+
+]
+
+test_requirements = [
+    'pytest',
+]
+
+
 setup(
     name='python-sonic',
     version='0.3.0',
@@ -17,9 +32,13 @@ setup(
     url='https://github.com/gkvoelkl/python-sonic',
     author='gkvoelkl',
     author_email='gkvoelkl@nelson-games.de',
-
+    packages=[
+        'psonic',
+    ],
     license='MIT',
-
+    zip_safe=False,
+    include_package_data=True,
+    install_requires=requirements,
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
@@ -31,7 +50,6 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
-
     keywords= [
        'music',
        'sonic pi',
@@ -42,18 +60,8 @@ setup(
        'supercollider',
        'synthesis'
     ],
-
-    #packages=find_packages(),
-    py_modules=['psonic'],
-    install_requires=['python-osc'],
-
-    # To provide executable scripts, use entry points in preference to the
-    # "scripts" keyword. Entry points provide cross-platform support and allow
-    # pip to create the appropriate form of executable for the target platform.
-    #entry_points={
-    #    'console_scripts': [
-    #        'sample=sample:main',
-    #    ],
-    #},
+    test_suite='tests',
+    tests_require=test_requirements,
+    setup_requires=setup_requirements,
 )
 
