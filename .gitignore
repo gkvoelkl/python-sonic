@@ -21,6 +21,7 @@ parts/
 sdist/
 var/
 *.egg-info/
+.pytest_cache/
 .installed.cfg
 *.egg
 
