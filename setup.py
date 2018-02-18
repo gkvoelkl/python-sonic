@@ -26,7 +26,7 @@ test_requirements = [
 
 setup(
     name='python-sonic',
-    version='0.3.0',
+    version='0.3.1',
     description='Programming Music with Sonic Pi or Supercollider',
     long_description=long_description,
     url='https://github.com/gkvoelkl/python-sonic',
