@@ -109,20 +109,10 @@ def synth(
 
 def play(note, attack=None, decay=None, sustain_level=None, sustain=None, release=None, cutoff=None,
          cutoff_attack=None, amp=None, pan=None):
-    parameters = []
+
+    arguments = locals()
+    parameters = ['{0}: {1}'.format(k, v) for k, v in arguments.items() if v is not None]
     parameter = ''
-
-    if attack is not None: parameters.append('attack: {0}'.format(attack))
-    if cutoff_attack is not None: parameters.append('cutoff_attack: {0}'.format(cutoff_attack))
-    if decay is not None: parameters.append('decay: {0}'.format(decay))
-    if sustain_level is not None: parameters.append('sustain_level: {0}'.format(sustain_level))
-    if sustain is not None: parameters.append('sustain: {0}'.format(sustain))
-    if release is not None: parameters.append('release: {0}'.format(release))
-    if cutoff is not None: parameters.append('cutoff: {0}'.format(cutoff))
-
-    if amp is not None: parameters.append('amp: {0}'.format(amp))
-    if pan is not None: parameters.append('pan: {0}'.format(pan))
-
     if len(parameters) > 0: parameter = ',' + ','.join(parameters)
 
     command = 'play {0}{1}'.format(note, parameter)
