@@ -25,7 +25,6 @@ class ChordQuality:
         self.inter = inter
 
 
-
 class Message:
     """
     For sending messages between threads
@@ -80,25 +79,13 @@ def use_synth(synth):
     _current_synth = synth
 
 
-def synth(
-    name, note=None, attack=None, decay=None,
+def synth(name, note=None, attack=None, decay=None,
     sustain_level=None, sustain=None, release=None,
     cutoff=None, cutoff_attack=None, amp=None, pan=None):
-    parameters = []
+
+    arguments = locals()
+    parameters = ['{0}: {1}'.format(k, v) for k, v in arguments.items() if v is not None]
     parameter = ''
-
-    if note is not None: parameters.append('note: {0}'.format(note))
-    if attack is not None: parameters.append('attack: {0}'.format(attack))
-    if cutoff_attack is not None: parameters.append('cutoff_attack: {0}'.format(cutoff_attack))
-    if decay is not None: parameters.append('decay: {0}'.format(decay))
-    if sustain_level is not None: parameters.append('sustain_level: {0}'.format(sustain_level))
-    if sustain is not None: parameters.append('sustain: {0}'.format(sustain))
-    if release is not None: parameters.append('release: {0}'.format(release))
-    if cutoff is not None: parameters.append('cutoff: {0}'.format(cutoff))
-
-    if amp is not None: parameters.append('amp: {0}'.format(amp))
-    if pan is not None: parameters.append('pan: {0}'.format(pan))
-
     if len(parameters) > 0: parameter = ',' + ','.join(parameters)
 
     command = 'synth :{0}{1}'.format(name.name, parameter)
@@ -107,8 +94,9 @@ def synth(
     synth_server.synth(command)
 
 
-def play(note, attack=None, decay=None, sustain_level=None, sustain=None, release=None, cutoff=None,
-         cutoff_attack=None, amp=None, pan=None):
+def play(note, attack=None, decay=None,
+    sustain_level=None, sustain=None, release=None,
+    cutoff=None, cutoff_attack=None, amp=None, pan=None):
 
     arguments = locals()
     parameters = ['{0}: {1}'.format(k, v) for k, v in arguments.items() if v is not None]
@@ -254,7 +242,6 @@ def send_message(message, *parameter):
     synth_server.send_message(message, *parameter)
 
 ## Compound classes ##
-
 class Ring:
     """
     ring buffer
