@@ -36,6 +36,7 @@ setup(
         'psonic',
         'psonic.samples',
         'psonic.samples.loops',
+        'psonic.internals',
     ],
     license='MIT',
     zip_safe=False,
