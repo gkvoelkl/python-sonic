@@ -4,6 +4,7 @@ from .psonic import *
 from .notes import *
 from .scales import *
 from .synthesizers import *
+from .synth_server import *
 from .effects import *
 from .samples import *
 from .samples.loops import *
@@ -18,6 +19,7 @@ from .samples.tabla import *
 from .samples.vinyl import *
 from .internals.chords import *
 from .internals.scales import *
+
 
 def in_thread(func):
     """Thread decorator"""
