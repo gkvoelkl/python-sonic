@@ -1,8 +1,9 @@
 from psonic import *
 
 def test_originl_behaviour():
-    play(72)
-    play(G5)
+    print('starting tests')
+    notes_to_play = [72, G5, Fs5, Eb5]
+    (play(note) for note in notes_to_play)
     sleep(0.5)
     play(72,amp=2)
     play(74,pan=-1)
@@ -32,6 +33,24 @@ def test_originl_behaviour():
     detune = 0.7
     synth(SQUARE, note = E4+detune)
     synth(GNOISE, release = 0.5, amp = 1, cutoff = 100)
+    sc = Ring(scale(E3, MINOR_PENTATONIC))
+    play(next(sc), release= 0.1)
+    with Fx(SLICER):
+        synth(PROPHET,note=E2,release=8,cutoff=80)
+        synth(PROPHET,note=E2+4,release=8,cutoff=80)
 
 
+    print('ending tests')
+
+def test_imports():
+    from psonic import(
+        SonicPi,
+        SonicPiNew,
+        ChordQuality,
+        Message,
+        Ring,
+        Fx,
+        Synth,
+        Sample,
+    )
 

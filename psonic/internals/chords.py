@@ -1,3 +1,12 @@
+
+# Not used anywhere
+class ChordQuality:
+    """Chord Quality"""
+
+    def __init__(self, name, inter):
+        self.name = name
+        self.inter = inter
+
 _CHORD_QUALITY = {
     'major': [0, 4, 7],
     'minor': [0, 3, 7],

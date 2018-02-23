@@ -1,10 +1,9 @@
 import random
 import time
-import threading
-
 #TODO: Optimize imports
 from .samples import Sample
-from .synthesizers import BEEP
+from .synthesizers import BEEP, SAW
+from .notes import C5
 from .internals.chords import _CHORD_QUALITY
 from .internals.scales import _SCALE_MODE
 
@@ -12,61 +11,6 @@ from pythonosc import osc_message_builder  # osc support
 from pythonosc import udp_client
 
 __debug = False
-
-
-## Base Classes ##
-class ChordQuality:
-    """
-    Chord Quality
-    """
-
-    def __init__(self, name, inter):
-        self.name = name
-        self.inter = inter
-
-
-class Message:
-    """
-    For sending messages between threads
-    """
-
-    def __init__(self):
-        self._condition = threading.Condition()
-
-    def cue(self):
-        with self._condition:
-            self._condition.notifyAll()  # Message to threads
-
-    def sync(self):
-        with self._condition:
-            self._condition.wait()  # Wait for message
-
-
-class Fx:
-    """
-    FX Effects
-    """
-
-    def __init__(self, mode, phase=0.24, probability=0, prob_pos=0):
-        self.mode = mode
-        self.phase = phase
-        self.probability = probability
-        self.prob_pos = prob_pos
-
-    def __enter__(self):
-        pass
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        pass
-
-
-def in_thread(func):
-    """Thread decorator"""
-    def wrapper():
-        _thread = threading.Thread(target=func)
-        _thread.start()
-
-    return wrapper
 
 
 ## Module attributes ##
@@ -110,8 +54,7 @@ def play(note, attack=None, decay=None,
 
 
 def play_pattern_timed(notes, times, release=None):
-    """
-    play notes
+    """play notes
     :param notes:
     :param times:
     :return:
@@ -126,32 +69,22 @@ def play_pattern_timed(notes, times, release=None):
 
 
 def play_pattern(notes):
-    """
-
-    :param notes:
+    """:param notes:
     :return:
     """
     play_pattern_timed(notes, 1)
 
 
-def sample(sample, rate=None, attack=None, sustain=None, release=None, beat_stretch=None,
-           start=None, finish=None, amp=None, pan=None):
-    parameters = []
+def sample(sample, rate=None, attack=None, sustain=None,
+	   release=None, beat_stretch=None, start=None,
+           finish=None, amp=None, pan=None):
+
+    arguments = locals()
+    parameters = ['{0}: {1}'.format(k, v) for k, v in arguments.items() if v is not None]
     parameter = ''
     command = ''
 
-    if rate is not None: parameters.append('rate: {0}'.format(rate))
-    if attack is not None: parameters.append('attack: {0}'.format(attack))
-    if sustain is not None: parameters.append('sustain: {0}'.format(sustain))
-    if release is not None: parameters.append('release: {0}'.format(release))
-    if beat_stretch is not None: parameters.append('beat_stretch: {0}'.format(beat_stretch))
-    if start is not None: parameters.append('start: {0}'.format(start))
-    if finish is not None: parameters.append('finish: {0}'.format(finish))
-    if amp is not None: parameters.append('amp: {0}'.format(amp))
-    if pan is not None: parameters.append('pan: {0}'.format(pan))
-
     if len(parameters) > 0: parameter = ',' + ','.join(parameters)
-
     if type(sample) == Sample:
         command = 'sample :{0}{1}'.format(sample.name, parameter)
     else:
@@ -162,8 +95,7 @@ def sample(sample, rate=None, attack=None, sustain=None, release=None, beat_stre
 
 
 def sleep(duration):
-    """
-    the same as time.sleep
+    """the same as time.sleep
     :param duration:
     :return:
     """
@@ -171,9 +103,7 @@ def sleep(duration):
     _debug('sleep', duration)
 
 def sample_duration(sample):
-    """
-    Returns the duration of the sample (in seconds)
-
+    """Returns the duration of the sample (in seconds)
     :param sample:
     :return: number
     """
@@ -181,8 +111,7 @@ def sample_duration(sample):
 
 
 def one_in(max):
-    """
-    random function  returns True in one of max cases
+    """random function  returns True in one of max cases
     :param max:
     :return: boolean
     """
@@ -190,9 +119,7 @@ def one_in(max):
 
 
 def chord(root_note, chord_quality):
-    """
-    Generates a list of notes of a chord
-
+    """Generates a list of notes of a chord
     :param root_note:
     :param chord_quality:
     :return: list
@@ -210,9 +137,7 @@ def chord(root_note, chord_quality):
 
 
 def scale(root_note, scale_mode, num_octaves=1):
-    """
-    Genarates a liste of notes of scale
-
+    """Genarates a liste of notes of scale
     :param root_note:
     :param scale_mode:
     :param num_octaves:
@@ -242,35 +167,24 @@ def send_message(message, *parameter):
     synth_server.send_message(message, *parameter)
 
 ## Compound classes ##
-class Ring:
-    """
-    ring buffer
-    """
+class SonicPiCommon:
 
-    def __init__(self, data):
-        self.data = data
-        self.index = -1
+    UDP_IP = "127.0.0.1"
 
-    def __iter__(self):  # return Iterator
-        return self
+    def send(self, command):
+        pass
 
-    def __next__(self):  # return Iterator next element
-        self.index += 1
-        if self.index == len(self.data):
-            self.index = 0
-        return self.data[self.index]
+    def sleep(self, duration):
+        time.sleep(duration)
 
-    def choose(self):  # random choose
-        return random.choice(self.data)
+    def sample(self, command):
+        self.send(command)
 
 
 ## Connection classes ##
-class SonicPi:
-    """
-    Communiction to Sonic Pi
-    """
+class SonicPi(SonicPiCommon):
+    """Communiction to Sonic Pi"""
 
-    UDP_IP = "127.0.0.1"
     UDP_PORT = 4557
     UDP_PORT_OSC_MESSAGE = 4559
     GUI_ID = 'SONIC_PI_PYTHON'
@@ -279,23 +193,23 @@ class SonicPi:
     STOP_COMMAND = "/stop-all-jobs"
 
     def __init__(self):
-        self.client = udp_client.UDPClient(SonicPi.UDP_IP, SonicPi.UDP_PORT)
-        self.client_for_messages = udp_client.UDPClient(SonicPi.UDP_IP, SonicPi.UDP_PORT_OSC_MESSAGE)
-
-    def sample(self, command):
-        self.run(command)
+        self.client = udp_client.UDPClient(
+            SonicPi.UDP_IP,
+            SonicPi.UDP_PORT
+        )
+        self.client_for_messages = udp_client.UDPClient(
+            self.UDP_IP,
+            self.UDP_PORT_OSC_MESSAGE
+        )
 
     def play(self, command):
         command = 'use_synth :{0}\n'.format(_current_synth.name) + command
-        self.run(command)
+        self.send(command)
 
     def synth(self, command):
-        self.run(command)
+        self.send(command)
 
-    def sleep(self, duration):
-        time.sleep(duration)
-
-    def run(self, command):
+    def send(self, command):
         self.send_command(SonicPi.RUN_COMMAND, command)
 
     def stop(self):
@@ -312,7 +226,6 @@ class SonicPi:
         if argument != "":
             msg.add_arg(argument)
         msg = msg.build()
-
         self.client.send(msg)
 
     def send_message(self,message, *parameters):
@@ -322,16 +235,16 @@ class SonicPi:
         msg = msg.build()
         self.client_for_messages.send(msg)
 
-class SonicPiNew:
-    """
-    Communiction to Sonic Pi
-    """
+class SonicPiNew(SonicPiCommon):
+    """Communiction to Sonic Pi"""
 
-    UDP_IP = "127.0.0.1"
     UDP_PORT = 4559
 
     def __init__(self):
-        self.client = udp_client.UDPClient(SonicPiNew.UDP_IP, SonicPiNew.UDP_PORT)
+        self.client = udp_client.UDPClient(
+            self.UDP_IP,
+            self.UDP_PORT
+        )
         self.commandServer = SonicPi()
         # x= 'live_loop :py do\n  nv=sync "/SENDOSC"\n  puts nv\n  eval(nv[0])\nend'
         # self.commandServer.run(x)
@@ -346,14 +259,8 @@ class SonicPiNew:
         msg = msg.build()
         self.client.send(msg)
 
-    def sample(self, command):
-        self.send(command)
-
     def play(self, command):
         self.send(command)
-
-    def sleep(self, duration):
-        time.sleep(duration)
 
 
 synth_server = SonicPi()
