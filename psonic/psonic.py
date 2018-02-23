@@ -12,10 +12,8 @@ from pythonosc import udp_client
 
 __debug = False
 
-
 ## Module attributes ##
 _current_synth = BEEP
-
 
 ## Module methodes ##
 def use_synth(synth):
