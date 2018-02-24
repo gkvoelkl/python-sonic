@@ -30,7 +30,6 @@ def in_thread(func):
 
     return wrapper
 
-
 class Fx:
     """FX Effects"""
 
@@ -64,7 +63,6 @@ class Ring:
 
     def choose(self):  # random choose
         return random.choice(self.data)
-
 
 # Not used anywhere
 class Message:

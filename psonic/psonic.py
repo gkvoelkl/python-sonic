@@ -16,6 +16,7 @@ def synth(name, note=None, attack=None, decay=None,
     cutoff=None, cutoff_attack=None, amp=None, pan=None):
 
     arguments = locals()
+    arguments.pop('name')
     parameters = ['{0}: {1}'.format(k, v) for k, v in arguments.items() if v is not None]
     parameter = ''
     if len(parameters) > 0: parameter = ',' + ','.join(parameters)
@@ -30,6 +31,7 @@ def play(note, attack=None, decay=None,
     cutoff=None, cutoff_attack=None, amp=None, pan=None):
 
     arguments = locals()
+    arguments.pop('note')
     parameters = ['{0}: {1}'.format(k, v) for k, v in arguments.items() if v is not None]
     parameter = ''
     if len(parameters) > 0: parameter = ',' + ','.join(parameters)
@@ -64,6 +66,7 @@ def sample(sample, rate=None, attack=None, sustain=None,
            finish=None, amp=None, pan=None):
 
     arguments = locals()
+    arguments.pop('sample')
     parameters = ['{0}: {1}'.format(k, v) for k, v in arguments.items() if v is not None]
     parameter = ''
     command = ''
@@ -73,7 +76,6 @@ def sample(sample, rate=None, attack=None, sustain=None,
         command = 'sample :{0}{1}'.format(sample.name, parameter)
     else:
         command = 'sample "{0}"{1}'.format(sample, parameter)
-
     _debug('sample command={}'.format(command))
     synth_server.sample(command)
 
