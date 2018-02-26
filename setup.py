@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 # To use a consistent encoding
 from codecs import open
 from os import path
@@ -11,12 +11,10 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 requirements = [
     'python-osc',
-
 ]
 
 setup_requirements = [
     'pytest-runner',
-
 ]
 
 test_requirements = [
@@ -67,4 +65,3 @@ setup(
     tests_require=test_requirements,
     setup_requires=setup_requirements,
 )
-

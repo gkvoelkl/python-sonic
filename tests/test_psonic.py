@@ -1,12 +1,11 @@
 from psonic import *
 
 def test_originl_behaviour():
-    print('starting tests')
     notes_to_play = [72, G5, Fs5, Eb5]
     (play(note) for note in notes_to_play)
     sleep(0.5)
-    play(72,amp=2)
-    play(74,pan=-1)
+    play(72, amp=2)
+    play(74, pan=-1)
     use_synth(SAW)
     use_synth(PROPHET)
     play(
@@ -15,7 +14,7 @@ def test_originl_behaviour():
     )
     sample(
         LOOP_AMEN, start=0.5, finish=0.8,
-        rate=-0.2,attack=0.3,release=1
+        rate=-0.2, attack=0.3, release=1
     )
     sample(
         DRUM_CYMBAL_OPEN, attack=0.01,
@@ -31,16 +30,14 @@ def test_originl_behaviour():
     )
     synth(TRI, note=D4, amp=0.4)
     detune = 0.7
-    synth(SQUARE, note = E4+detune)
-    synth(GNOISE, release = 0.5, amp = 1, cutoff = 100)
+    synth(SQUARE, note=E4+detune)
+    synth(GNOISE, release=0.5, amp=1, cutoff=100)
     sc = Ring(scale(E3, MINOR_PENTATONIC))
-    play(next(sc), release= 0.1)
+    play(next(sc), release=0.1)
     with Fx(SLICER):
-        synth(PROPHET,note=E2,release=8,cutoff=80)
-        synth(PROPHET,note=E2+4,release=8,cutoff=80)
+        synth(PROPHET, note=E2, release=8, cutoff=80)
+        synth(PROPHET, note=E2+4, release=8, cutoff=80)
 
-
-    print('ending tests')
 
 def test_imports():
     from psonic import(
@@ -53,4 +50,3 @@ def test_imports():
         Synth,
         Sample,
     )
-
