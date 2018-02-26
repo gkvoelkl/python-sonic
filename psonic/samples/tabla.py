@@ -1,6 +1,8 @@
+"""Tabla"""
+
 from . import Sample
 
-## Tabla
+
 TABLA_DHEC = Sample('tabla_dhec', 0.3250793650793651)
 TABLA_GHE1 = Sample('tabla_ghe1', 0.5912244897959184)
 TABLA_GHE2 = Sample('tabla_ghe2', 2.6607256235827665)
@@ -27,36 +29,3 @@ TABLA_TE_NE = Sample('tabla_te_ne', 0.15310657596371882)
 TABLA_TUN1 = Sample('tabla_tun1', 2.3394104308390022)
 TABLA_TUN2 = Sample('tabla_tun2', 2.693514739229025)
 TABLA_TUN3 = Sample('tabla_tun3', 2.0956009070294783)
-
-def get_sounds():
-
-    sounds = dict(
-        TABLA_DHEC = TABLA_DHEC,
-        TABLA_GHE1 = TABLA_GHE1,
-        TABLA_GHE2 = TABLA_GHE2,
-        TABLA_GHE3 = TABLA_GHE3,
-        TABLA_GHE4 = TABLA_GHE4,
-        TABLA_GHE5 = TABLA_GHE5,
-        TABLA_GHE6 = TABLA_GHE6,
-        TABLA_GHE7 = TABLA_GHE7,
-        TABLA_GHE8 = TABLA_GHE8,
-        TABLA_KE1 = TABLA_KE1,
-        TABLA_KE2 = TABLA_KE2,
-        TABLA_KE3 = TABLA_KE3,
-        TABLA_NA = TABLA_NA,
-        TABLA_NA_O = TABLA_NA_O,
-        TABLA_NA_S = TABLA_NA_S,
-        TABLA_RE = TABLA_RE,
-        TABLA_TAS1 = TABLA_TAS1,
-        TABLA_TAS2 = TABLA_TAS2,
-        TABLA_TAS3 = TABLA_TAS3,
-        TABLA_TE1 = TABLA_TE1,
-        TABLA_TE2 = TABLA_TE2,
-        TABLA_TE_M = TABLA_TE_M,
-        TABLA_TE_NE = TABLA_TE_NE,
-        TABLA_TUN1 = TABLA_TUN1,
-        TABLA_TUN2 = TABLA_TUN2,
-        TABLA_TUN3 = TABLA_TUN3,
-    )
-    return sounds
-

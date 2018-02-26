@@ -1,10 +1,14 @@
 import random
 import threading
+from .synth_server import (
+    SonicPi,
+    SonicPiNew,
+    use_synth,
+)
 from .psonic import *
 from .notes import *
 from .scales import *
 from .synthesizers import *
-from .synth_server import *
 from .effects import *
 from .samples import *
 from .samples.loops import *
@@ -78,7 +82,3 @@ class Message:
     def sync(self):
         with self._condition:
             self._condition.wait()  # Wait for message
-
-
-
-

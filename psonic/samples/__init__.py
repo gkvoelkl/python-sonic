@@ -1,8 +1,5 @@
-
 class Sample(object):
-    """
-    Sample
-    """
+    """Sample"""
 
     def __init__(self, name, duration):
         self.name = name

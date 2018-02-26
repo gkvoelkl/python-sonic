@@ -1,3 +1,5 @@
+"""SonicPi synth server"""
+
 import time
 from pythonosc import osc_message_builder  # osc support
 from pythonosc import udp_client
@@ -107,4 +109,3 @@ class SonicPiNew(SonicPiCommon):
 
     def play(self, command):
         self.send(command)
-

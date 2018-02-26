@@ -1,15 +1,12 @@
-
+"""Synthesizer"""
 
 class Synth:
-    """
-    Synthesizer
-    """
+    """Synthesizer"""
 
     def __init__(self, name):
         self.name = name
 
 
-## Synthezier ##
 DULL_BELL = Synth('dull_bell')
 PRETTY_BELL = Synth('pretty_bell')
 SINE = Synth('sine')
@@ -52,5 +49,3 @@ CHIPNOISE = Synth('chipnoise')
 TECHSAWS = Synth('tech_saws')  # Sonic Pi 2.11
 SOUND_IN = Synth('sound_in')
 SOUND_IN_STEREO = Synth('sound_in_stereo')
-
-

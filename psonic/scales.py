@@ -1,4 +1,5 @@
-## Scale Mode (from sonic pi)##
+"""Scale Mode (from sonic pi)"""
+
 DIATONIC = 'diatonic'
 IONIAN = 'ionian'
 MAJOR = 'major'

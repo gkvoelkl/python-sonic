@@ -1,6 +1,8 @@
+"""Ambient sounds"""
+
 from . import Sample
 
-## Ambient Sounds
+
 AMBI_CHOIR = Sample('ambi_choir', 1.5715419501133787)
 AMBI_DARK_WOOSH = Sample('ambi_dark_woosh', 3.7021315192743764)
 AMBI_DRONE = Sample('ambi_drone', 4.40843537414966)
@@ -11,19 +13,3 @@ AMBI_LUNAR_LAND = Sample('ambi_lunar_land', 7.394240362811791)
 AMBI_PIANO = Sample('ambi_piano', 2.811746031746032)
 AMBI_SOFT_BUZZ = Sample('ambi_soft_buzz', 0.7821541950113379)
 AMBI_SWOOSH = Sample('ambi_swoosh', 1.8484580498866212)
-
-def get_sounds():
-
-    sounds = dict(
-        AMBI_CHOIR = AMBI_CHOIR,
-        AMBI_DARK_WOOSH = AMBI_DARK_WOOSH,
-        AMBI_DRONE = AMBI_DRONE,
-        AMBI_GLASS_HUM = AMBI_GLASS_HUM,
-        AMBI_GLASS_RUB = AMBI_GLASS_RUB,
-        AMBI_HAUNTED_HUM = AMBI_HAUNTED_HUM,
-        AMBI_LUNAR_LAND = AMBI_LUNAR_LAND,
-        AMBI_PIANO = AMBI_PIANO,
-        AMBI_SOFT_BUZZ = AMBI_SOFT_BUZZ,
-        AMBI_SWOOSH = AMBI_SWOOSH,
-    )
-    return sounds

@@ -1,4 +1,7 @@
+"""Drum sounds"""
+
 from . import Sample
+
 
 ## Drum Sounds
 DRUM_BASS_HARD = Sample('drum_bass_hard', 0.6951927437641723)
@@ -40,45 +43,3 @@ BD_SONE = Sample('bd_sone', 0.4089115646258503)
 BD_TEK = Sample('bd_tek', 0.24024943310657595)
 BD_ZOME = Sample('bd_zome', 0.45972789115646256)
 BD_ZUM = Sample('bd_zum', 0.13158730158730159)
-
-def get_sounds():
-    sounds = dict(
-        DRUM_BASS_HARD = DRUM_BASS_HARD,
-        DRUM_BASS_SOFT = DRUM_BASS_SOFT,
-        DRUM_COWBELL = DRUM_COWBELL,
-        DRUM_CYMBAL_CLOSED = DRUM_CYMBAL_CLOSED,
-        DRUM_CYMBAL_HARD = DRUM_CYMBAL_HARD,
-        DRUM_CYMBAL_OPEN = DRUM_CYMBAL_OPEN,
-        DRUM_CYMBAL_PEDAL = DRUM_CYMBAL_PEDAL,
-        DRUM_CYMBAL_SOFT = DRUM_CYMBAL_SOFT,
-        DRUM_HEAVY_KICK = DRUM_HEAVY_KICK,
-        DRUM_ROLL = DRUM_ROLL,
-        DRUM_SNARE_HARD = DRUM_SNARE_HARD,
-        DRUM_SNARE_SOFT = DRUM_SNARE_SOFT,
-        DRUM_SPLASH_HARD = DRUM_SPLASH_HARD,
-        DRUM_SPLASH_SOFT = DRUM_SPLASH_SOFT,
-        DRUM_TOM_HI_HARD = DRUM_TOM_HI_HARD,
-        DRUM_TOM_HI_SOFT = DRUM_TOM_HI_SOFT,
-        DRUM_TOM_LO_HARD = DRUM_TOM_LO_HARD,
-        DRUM_TOM_LO_SOFT = DRUM_TOM_LO_SOFT,
-        DRUM_TOM_MID_HARD = DRUM_TOM_MID_HARD,
-        DRUM_TOM_MID_SOFT = DRUM_TOM_MID_SOFT,
-
-        SN_DOLF = SN_DOLF,
-        SN_DUB = SN_DUB,
-        SN_ZOME = SN_ZOME,
-
-        BD_808 = BD_808,
-        BD_ADA = BD_ADA,
-        BD_BOOM = BD_BOOM,
-        BD_FAT = BD_FAT,
-        BD_GAS = BD_GAS,
-        BD_HAUS = BD_HAUS,
-        BD_KLUB = BD_KLUB,
-        BD_PURE = BD_PURE,
-        BD_SONE = BD_SONE,
-        BD_TEK = BD_TEK,
-        BD_ZOME = BD_ZOME,
-        BD_ZUM = BD_ZUM,
-    )
-    return sounds

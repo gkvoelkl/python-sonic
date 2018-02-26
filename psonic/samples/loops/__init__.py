@@ -1,6 +1,8 @@
+"""Sounds for Looping"""
+
 from psonic.samples import Sample
 
-## Sounds for Looping
+
 LOOP_AMEN = Sample('loop_amen', 1.753310657596372)
 LOOP_AMEN_FULL = Sample('loop_amen_full', 6.857142857142857)
 LOOP_BREAKBEAT = Sample('loop_breakbeat', 1.9047619047619047)
