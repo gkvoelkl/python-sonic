@@ -22,6 +22,7 @@ sdist/
 var/
 *.egg-info/
 .pytest_cache/
+.ipynb_checkpoints/
 .installed.cfg
 *.egg
 
