@@ -57,7 +57,7 @@ class SonicPi(SonicPiCommon):
     def synth(self, command):
         self.send(command)
 
-    def send(self, command):
+    def run(self, command):
         self.send_command(SonicPi.RUN_COMMAND, command)
 
     def stop(self):

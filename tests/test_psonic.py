@@ -37,6 +37,11 @@ def test_originl_behaviour():
     with Fx(SLICER):
         synth(PROPHET, note=E2, release=8, cutoff=80)
         synth(PROPHET, note=E2+4, release=8, cutoff=80)
+    run("""live_loop :foo do
+        use_real_time
+        a, b, c = sync "/osc/trigger/prophet"
+        synth :prophet, note: a, cutoff: b, sustain: c
+        end """)
 
 
 def test_imports():
