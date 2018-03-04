@@ -42,7 +42,8 @@ def test_originl_behaviour():
         a, b, c = sync "/osc/trigger/prophet"
         synth :prophet, note: a, cutoff: b, sustain: c
         end """)
-
+    send_message('/trigger/prophet', 70, 100, 8)
+    stop()
 
 def test_imports():
     from psonic import(
