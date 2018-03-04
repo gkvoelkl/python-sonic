@@ -42,8 +42,8 @@ class SonicPi(SonicPiCommon):
 
     def __init__(self):
         self.client = udp_client.UDPClient(
-            SonicPi.UDP_IP,
-            SonicPi.UDP_PORT
+            self.UDP_IP,
+            self.UDP_PORT
         )
         self.client_for_messages = udp_client.UDPClient(
             self.UDP_IP,
@@ -76,7 +76,7 @@ class SonicPi(SonicPiCommon):
         msg = msg.build()
         self.client.send(msg)
 
-    def send_message(self,message, *parameters):
+    def send_message(self, message, *parameters):
         msg = osc_message_builder.OscMessageBuilder(message)
         for p in parameters:
             msg.add_arg(p)
