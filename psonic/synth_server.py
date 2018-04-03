@@ -60,6 +60,9 @@ class SonicPi(SonicPiCommon):
     def run(self, command):
         self.send_command(SonicPi.RUN_COMMAND, command)
 
+    def send(self,command):
+        self.run(command)
+
     def stop(self):
         self.send_command(SonicPi.STOP_COMMAND)
 
