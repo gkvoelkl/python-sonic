@@ -113,8 +113,8 @@ def chord(root_note, chord_quality):
     half_tone_steps = _CHORD_QUALITY[chord_quality]
 
     for i in half_tone_steps:
-        n = n + i
-        result.append(n)
+        q = n + i
+        result.append(q)
 
     return result
 
