@@ -716,7 +716,7 @@ Now a simple structure with four live loops
     live_thread_1 = Thread(name='producer', target=live_loop_1, args=(condition,stop_event))
     live_thread_2 = Thread(name='consumer1', target=live_loop_2, args=(condition,stop_event))
     live_thread_3 = Thread(name='consumer2', target=live_loop_3, args=(condition,stop_event))
-    live_thread_4 = Thread(name='consumer3', target=live_loop_3, args=(condition,stop_event))
+    live_thread_4 = Thread(name='consumer3', target=live_loop_4, args=(condition,stop_event))
     
     live_thread_1.start()
     live_thread_2.start()
@@ -751,8 +751,8 @@ After starting the loops you can change them
 .. code:: ipython3
 
     def live_2():
-        #sample(AMBI_CHOIR, rate=0.4)
-        #sleep(1)
+        sample(AMBI_CHOIR, rate=0.4)
+        sleep(1)
         pass
 
 .. code:: ipython3
