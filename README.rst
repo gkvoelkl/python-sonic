@@ -32,7 +32,6 @@ Limitations
 
 -  You have to start *Sonic Pi* first before you can use it with
    python-sonic
--  Only the notes from C2 to C6
 
 Changelog
 ---------
