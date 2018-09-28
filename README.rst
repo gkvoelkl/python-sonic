@@ -408,6 +408,19 @@ Play chords
     play(chord(E4, DOM7))
     sleep(1)
 
+Play chords with inversions
+
+.. code:: ipython3
+
+    play(chord(E4, MAJOR))
+    sleep(1)
+    play(chord(E4, MAJOR, inversion=1))
+    sleep(1)
+    play(chord(E4, MAJOR, 2))
+    sleep(1)
+    play(chord(E3, MAJOR))
+    sleep(1)
+
 Play arpeggios
 
 .. code:: ipython3
