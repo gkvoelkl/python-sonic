@@ -32,7 +32,6 @@ Limitations
 
 -  You have to start *Sonic Pi* first before you can use it with
    python-sonic
--  Only the notes from C2 to C6
 
 Changelog
 ---------
@@ -407,6 +406,19 @@ Play chords
     play(chord(E4, MINOR7))
     sleep(1)
     play(chord(E4, DOM7))
+    sleep(1)
+
+Play chords with inversions
+
+.. code:: ipython3
+
+    play(chord(E4, MAJOR))
+    sleep(1)
+    play(chord(E4, MAJOR, inversion=1))
+    sleep(1)
+    play(chord(E4, MAJOR, 2))
+    sleep(1)
+    play(chord(E3, MAJOR))
     sleep(1)
 
 Play arpeggios

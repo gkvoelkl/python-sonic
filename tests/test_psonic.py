@@ -1,3 +1,4 @@
+import pytest
 from psonic import *
 
 def test_originl_behaviour():
@@ -44,6 +45,25 @@ def test_originl_behaviour():
         end """)
     send_message('/trigger/prophet', 70, 100, 8)
     stop()
+
+
+@pytest.mark.parametrize("root,quality,inversion,result", (
+    (C4, MAJOR, None, [C4, E4, G4]),
+    (C4, MAJOR, 0, [C4, E4, G4]),
+    (C4, MAJOR, 1, [G3, C4, E4]),
+    (C4, MAJOR, 2, [E3, G3, C4]),
+    (C4, MAJOR, 3, [C4, E4, G4]),
+    (C4, MAJOR, 4, [G3, C4, E4]),
+    (C4, MAJOR7, 0, [C4, E4, G4, B4]),
+    (C4, MAJOR7, 1, [B3, C4, E4, G4]),
+    (C4, MAJOR7, 2, [G3, B3, C4, E4]),
+    (C4, MAJOR7, 3, [E3, G3, B3, C4]),
+    (C4, MAJOR7, 4, [C4, E4, G4, B4]),
+    (C4, MAJOR7, 5, [B3, C4, E4, G4]),
+))
+def test_chord_inversions(root, quality, inversion, result):
+    assert chord(root, quality, inversion) == result
+
 
 def test_imports():
     from psonic import(
