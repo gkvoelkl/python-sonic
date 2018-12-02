@@ -14,7 +14,7 @@ If you like it, use it. If you have some suggestions, tell me
 Installation
 ------------
 
--  First you need Python 3 (https://www.python.org, ) - Python 3.5
+-  First you need Python 3 (https://www.python.org) - Python 3.5
    should work, because it's the development environment
 -  Then Sonic Pi (https://sonic-pi.net) - That makes the sound
 -  Modul python-osc (https://pypi.python.org/pypi/python-osc) -
@@ -74,7 +74,7 @@ Some more notes
     sleep(1)
     play(79) 
 
-In more tratitional music notation
+In more traditional music notation
 
 .. code:: ipython3
 
