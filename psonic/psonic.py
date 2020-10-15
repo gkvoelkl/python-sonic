@@ -101,10 +101,25 @@ def one_in(max):
     """
     return random.randint(1, max) == 1
 
-def chord(root_note, chord_quality):
+def invert_pitches(pitches, inversion):
+    """Inverts a list of pitches, wrapping the top pitches an octave below the root
+    :param pitches: list
+    :param inversion: int
+    :return: list
+    """
+
+    for i in range(1, (inversion % (len(pitches)))+1):
+        pitches[-i] = pitches[-i] - 12
+
+    pitches.sort()
+
+    return pitches
+
+def chord(root_note, chord_quality, inversion=None):
     """Generates a list of notes of a chord
     :param root_note:
     :param chord_quality:
+    :param inversion:
     :return: list
     """
     result = []
@@ -115,6 +130,9 @@ def chord(root_note, chord_quality):
     for i in half_tone_steps:
         q = n + i
         result.append(q)
+
+    if inversion:
+        result = invert_pitches(result, inversion)
 
     return result
 

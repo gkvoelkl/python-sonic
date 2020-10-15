@@ -14,7 +14,7 @@ If you like it, use it. If you have some suggestions, tell me
 Installation
 ------------
 
--  First you need Python 3 (https://www.python.org, ) - Python 3.5
+-  First you need Python 3 (https://www.python.org) - Python 3.5
    should work, because it's the development environment
 -  Then Sonic Pi (https://sonic-pi.net) - That makes the sound
 -  Modul python-osc (https://pypi.python.org/pypi/python-osc) -
@@ -32,7 +32,6 @@ Limitations
 
 -  You have to start *Sonic Pi* first before you can use it with
    python-sonic
--  Only the notes from C2 to C6
 
 Changelog
 ---------
@@ -75,7 +74,7 @@ Some more notes
     sleep(1)
     play(79) 
 
-In more tratitional music notation
+In more traditional music notation
 
 .. code:: ipython3
 
@@ -409,6 +408,19 @@ Play chords
     play(chord(E4, DOM7))
     sleep(1)
 
+Play chords with inversions
+
+.. code:: ipython3
+
+    play(chord(E4, MAJOR))
+    sleep(1)
+    play(chord(E4, MAJOR, inversion=1))
+    sleep(1)
+    play(chord(E4, MAJOR, 2))
+    sleep(1)
+    play(chord(E3, MAJOR))
+    sleep(1)
+
 Play arpeggios
 
 .. code:: ipython3
@@ -716,7 +728,7 @@ Now a simple structure with four live loops
     live_thread_1 = Thread(name='producer', target=live_loop_1, args=(condition,stop_event))
     live_thread_2 = Thread(name='consumer1', target=live_loop_2, args=(condition,stop_event))
     live_thread_3 = Thread(name='consumer2', target=live_loop_3, args=(condition,stop_event))
-    live_thread_4 = Thread(name='consumer3', target=live_loop_3, args=(condition,stop_event))
+    live_thread_4 = Thread(name='consumer3', target=live_loop_4, args=(condition,stop_event))
     
     live_thread_1.start()
     live_thread_2.start()
@@ -751,8 +763,8 @@ After starting the loops you can change them
 .. code:: ipython3
 
     def live_2():
-        #sample(AMBI_CHOIR, rate=0.4)
-        #sleep(1)
+        sample(AMBI_CHOIR, rate=0.4)
+        sleep(1)
         pass
 
 .. code:: ipython3
