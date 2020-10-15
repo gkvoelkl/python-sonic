@@ -167,7 +167,22 @@ def send_message(message, *parameter):
     synth_server.send_message(message, *parameter)
 
 
+def start_recording():
+    synth_server.start_recording()
+
+
+def stop_recording():
+    synth_server.stop_recording()
+
+
+def save_recording(name):
+    synth_server.save_recording(name)
+
 synth_server = SonicPi()
+
+def set_server_parameter(udp_ip="", udp_port=-1, udp_port_osc_message=-1):
+    synth_server.set_parameter(udp_ip, udp_port, udp_port_osc_message)
+
 
 def _debug(*args):
     if __debug: print(args)
