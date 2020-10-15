@@ -19,6 +19,15 @@ class SonicPiCommon:
 
     UDP_IP = "127.0.0.1"
 
+    def __init__(self):
+        self.udp_ip = self.UDP_IP
+
+    def set_parameter(self, udp_ip=""):
+        if udp_ip == "":
+            self.udp_ip = self.UDP_IP
+        else:
+            self.udp_ip = udp_ip
+
     def send(self, command):
         pass
 
@@ -28,27 +37,56 @@ class SonicPiCommon:
     def sample(self, command):
         self.send(command)
 
+## Ports could be find in home ./sonic-pi/log/server-output.log
+#     Version        3.2.0
+# Listen port:       51235  4557
+# Scsynth port:      51237  4556
+# Scsynth send port: 51237  4556
+# OSC cues port:      4560  4559
+# Erlang port:       51240  4560
+# OSC MIDI out port: 51238  4561
+# OSC MIDI in port:  51239  4562
+# Websocket port:    51241
 
 ## Connection classes ##
 class SonicPi(SonicPiCommon):
     """Communiction to Sonic Pi"""
 
-    UDP_PORT = 4557
-    UDP_PORT_OSC_MESSAGE = 4559
+    #UDP_PORT = 4557
+    UDP_PORT = 51235
+
+    #UDP_PORT_OSC_MESSAGE = 4559
+    UDP_PORT_OSC_MESSAGE = 4560
     GUI_ID = 'SONIC_PI_PYTHON'
 
     RUN_COMMAND = "/run-code"
     STOP_COMMAND = "/stop-all-jobs"
 
     def __init__(self):
+        super().__init__()
+        self.udp_port = self.UDP_PORT
+        self.udp_port_osc_message = self.UDP_PORT_OSC_MESSAGE
+
+        self._init_client()
+
+    def _init_client(self):
         self.client = udp_client.UDPClient(
-            self.UDP_IP,
-            self.UDP_PORT
+            self.udp_ip,
+            self.udp_port
         )
         self.client_for_messages = udp_client.UDPClient(
-            self.UDP_IP,
-            self.UDP_PORT_OSC_MESSAGE
+            self.udp_ip,
+            self.udp_port_osc_message
         )
+
+    def set_parameter(self, udp_ip = "", udp_port=-1, udp_port_osc_message=-1):
+        super().set_parameter(udp_ip)
+        if udp_port == -1: udp_port = self.UDP_PORT
+        self.udp_port = udp_port
+        if udp_port_osc_message == -1: udp_port_osc_message = self.UDP_PORT_OSC_MESSAGE
+        self.udp_port_osc_message = udp_port_osc_message
+
+        self._init_client()
 
     def play(self, command):
         command = 'use_synth :{0}\n'.format(_current_synth.name) + command
