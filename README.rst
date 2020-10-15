@@ -1,4 +1,3 @@
-
 python-sonic - Programming Music with Python, Sonic Pi or Supercollider
 =======================================================================
 
@@ -14,8 +13,8 @@ If you like it, use it. If you have some suggestions, tell me
 Installation
 ------------
 
--  First you need Python 3 (https://www.python.org) - Python 3.5
-   should work, because it's the development environment
+-  First you need Python 3 (https://www.python.org, ) - Python 3.5
+   should work, because it’s the development environment
 -  Then Sonic Pi (https://sonic-pi.net) - That makes the sound
 -  Modul python-osc (https://pypi.python.org/pypi/python-osc) -
    Connection between Python and Sonic Pi Server
@@ -32,22 +31,37 @@ Limitations
 
 -  You have to start *Sonic Pi* first before you can use it with
    python-sonic
+-  Only the notes from C2 to C6
 
 Changelog
 ---------
 
-+------------+---------------------------------------------------------------+
-| Version    |                                                               |
-+============+===============================================================+
-| 0.2.0      | Some changes for Sonic Pi 2.11. Simpler multi-threading with  |
-|            | decorator *@in\_thread*. Messaging with *cue* and *sync*.     |
-+------------+---------------------------------------------------------------+
-| 0.3.0      | OSC Communication                                             |
-+------------+---------------------------------------------------------------+
-| 0.3.1.     | Update, sort and duration of samples                          |
-+------------+---------------------------------------------------------------+
-| 0.3.2.     | Restructured                                                  |
-+------------+---------------------------------------------------------------+
++--------+-------------------------------------------------------------+
+| V      |                                                             |
+| ersion |                                                             |
++========+=============================================================+
+| 0.2.0  | Some changes for Sonic Pi 2.11. Simpler multi-threading     |
+|        | with decorator *@in_thread*. Messaging with *cue* and       |
+|        | *sync*.                                                     |
++--------+-------------------------------------------------------------+
+| 0.3.0  | OSC Communication                                           |
++--------+-------------------------------------------------------------+
+| 0.3.1. | Update, sort and duration of samples                        |
++--------+-------------------------------------------------------------+
+| 0.3.2. | Restructured                                                |
++--------+-------------------------------------------------------------+
+| 0.4.0  | Changes communication ports and recording                   |
++--------+-------------------------------------------------------------+
+
+Communication
+-------------
+
+| The API *python-sonic* communications with *Sonic Pi* over UDP and two
+  ports. One port is an internal *Sonic Pi* port and could be changed.
+| For older *Sonic Pi* Version you have to set the ports explicitly
+
+from psonic import *
+set_server_parameters('127.0.0.1',4557,4559)
 
 Examples
 --------
@@ -74,7 +88,7 @@ Some more notes
     sleep(1)
     play(79) 
 
-In more traditional music notation
+In more tratitional music notation
 
 .. code:: ipython3
 
@@ -249,8 +263,25 @@ If you want to hear more than one sound at a time, use Threads.
     while True:
         pass
 
-Every function *bass\_sound* and *snare\_sound* have its own thread.
-Your can hear them running.
+
+::
+
+
+    ---------------------------------------------------------------------------
+
+    KeyboardInterrupt                         Traceback (most recent call last)
+
+    <ipython-input-19-5b8671a783d6> in <module>
+         22 
+         23 while True:
+    ---> 24     pass
+    
+
+    KeyboardInterrupt: 
+
+
+Every function *bass_sound* and *snare_sound* have its own thread. Your
+can hear them running.
 
 .. code:: ipython3
 
@@ -293,7 +324,7 @@ Your can hear them running.
 
 .. parsed-literal::
 
-    Press Enter to continue...
+    Press Enter to continue... 
 
 
 
@@ -309,7 +340,7 @@ you can use *Condition*. One function sends a message with
 *condition.notifyAll* the other waits until the message comes
 *condition.wait*.
 
-More simple with decorator \_\_@in\_thread\_\_
+More simple with decorator \_\_@in_thread_\_
 
 .. code:: ipython3
 
@@ -349,15 +380,7 @@ More simple with decorator \_\_@in\_thread\_\_
 
 .. parsed-literal::
 
-    Press Enter to continue...
-
-
-
-
-.. parsed-literal::
-
-    ''
-
+    Press Enter to continue... 
 
 
 .. code:: ipython3
@@ -406,19 +429,6 @@ Play chords
     play(chord(E4, MINOR7))
     sleep(1)
     play(chord(E4, DOM7))
-    sleep(1)
-
-Play chords with inversions
-
-.. code:: ipython3
-
-    play(chord(E4, MAJOR))
-    sleep(1)
-    play(chord(E4, MAJOR, inversion=1))
-    sleep(1)
-    play(chord(E4, MAJOR, 2))
-    sleep(1)
-    play(chord(E3, MAJOR))
     sleep(1)
 
 Play arpeggios
@@ -473,7 +483,7 @@ Live Loop
 ~~~~~~~~~
 
 One of the best in SONIC PI is the *Live Loop*. While a loop is playing
-music you can change it and hear the change. Let's try it in Python,
+music you can change it and hear the change. Let’s try it in Python,
 too.
 
 .. code:: ipython3
@@ -509,7 +519,7 @@ too.
 
 
 
-Now change the function *my\_loop* und you can hear it.
+Now change the function *my_loop* und you can hear it.
 
 .. code:: ipython3
 
@@ -533,7 +543,7 @@ Now change the function *my\_loop* und you can hear it.
         play(random.choice(chord(E3, MINOR)), release= 0.2, cutoff=random.randrange(60, 130))
         sleep(0.25)
 
-To stop the sound you have to end the kernel. In IPython with Kernel -->
+To stop the sound you have to end the kernel. In IPython with Kernel –>
 Restart
 
 Now with two live loops which are synch.
@@ -728,7 +738,7 @@ Now a simple structure with four live loops
     live_thread_1 = Thread(name='producer', target=live_loop_1, args=(condition,stop_event))
     live_thread_2 = Thread(name='consumer1', target=live_loop_2, args=(condition,stop_event))
     live_thread_3 = Thread(name='consumer2', target=live_loop_3, args=(condition,stop_event))
-    live_thread_4 = Thread(name='consumer3', target=live_loop_4, args=(condition,stop_event))
+    live_thread_4 = Thread(name='consumer3', target=live_loop_3, args=(condition,stop_event))
     
     live_thread_1.start()
     live_thread_2.start()
@@ -763,8 +773,8 @@ After starting the loops you can change them
 .. code:: ipython3
 
     def live_2():
-        sample(AMBI_CHOIR, rate=0.4)
-        sleep(1)
+        #sample(AMBI_CHOIR, rate=0.4)
+        #sleep(1)
         pass
 
 .. code:: ipython3
@@ -850,7 +860,7 @@ You can write it in th GUI or send one with Python.
 
     run("""live_loop :foo do
       use_real_time
-      a, b, c = sync "/osc/trigger/prophet"
+      a, b, c = sync "/osc*/trigger/prophet"
       synth :prophet, note: a, cutoff: b, sustain: c
     end """)
 
@@ -863,6 +873,48 @@ Now send a message to Sonic Pi.
 .. code:: ipython3
 
     stop()
+
+Recording
+---------
+
+With python-sonic you can record wave files.
+
+.. code:: ipython3
+
+    from psonic import *
+
+.. code:: ipython3
+
+    # start recording
+    start_recording()
+    
+    play(chord(E4, MINOR)) 
+    sleep(1)
+    play(chord(E4, MAJOR))
+    sleep(1)
+    play(chord(E4, MINOR7))
+    sleep(1)
+    play(chord(E4, DOM7))
+    sleep(1)
+
+.. code:: ipython3
+
+    # stop recording
+    stop_recording
+
+
+
+
+.. parsed-literal::
+
+    <function psonic.psonic.stop_recording()>
+
+
+
+.. code:: ipython3
+
+    # save file
+    save_recording('/Volumes/jupyter/python-sonic/test.wav')
 
 More Examples
 -------------
