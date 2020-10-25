@@ -1,12 +1,14 @@
 from setuptools import setup
 # To use a consistent encoding
+# python setup.py sdist bdist_wheel
+# twine upload dist/*
 from codecs import open
 from os import path
 
 here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file
-with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+with open(path.join(here, 'README.txt'), encoding='utf-8') as f:
     long_description = f.read()
 
 requirements = [
@@ -24,9 +26,11 @@ test_requirements = [
 
 setup(
     name='python-sonic',
-    version='0.4.0',
+    version='0.4.1',
     description='Programming Music with Sonic Pi or Supercollider',
     long_description=long_description,
+#    long_description_content_type='text/x-rst',
+    long_description_content_type='text/plain',
     url='https://github.com/gkvoelkl/python-sonic',
     author='gkvoelkl',
     author_email='gkvoelkl@nelson-games.de',
@@ -50,6 +54,7 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7'
     ],
     keywords= [
        'music',
