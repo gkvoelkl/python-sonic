@@ -61,6 +61,9 @@ class SonicPi(SonicPiCommon):
 
     RUN_COMMAND = "/run-code"
     STOP_COMMAND = "/stop-all-jobs"
+    START_RECORDING_COMMAND = "/start-recording"
+    STOP_RECORDING_COMMAND = "/stop-recording"
+    SAVE_RECORDING_COMMAND = "/save-recording"
 
     def __init__(self):
         super().__init__()
@@ -97,6 +100,16 @@ class SonicPi(SonicPiCommon):
 
     def run(self, command):
         self.send_command(SonicPi.RUN_COMMAND, command)
+
+    def start_recording(self):
+        self.send_command(SonicPi.START_RECORDING_COMMAND)
+
+    def stop_recording(self):
+        self.send_command(SonicPi.START_RECORDING_COMMAND)
+
+    def save_recording(self, name):
+        self.send_command(SonicPi.SAVE_RECORDING_COMMAND,name)
+
 
     def send(self,command):
         self.run(command)
