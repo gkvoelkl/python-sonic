@@ -60,8 +60,10 @@ Communication
   ports. One port is an internal *Sonic Pi* port and could be changed.
 | For older *Sonic Pi* Version you have to set the ports explicitly
 
-from psonic import *
-set_server_parameters('127.0.0.1',4557,4559)
+.. code:: ipython3
+
+    from psonic import *
+    set_server_parameter('127.0.0.1',4557,4559)
 
 Examples
 --------
