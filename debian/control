@@ -4,6 +4,10 @@ Priority: optional
 Maintainer: gkvoelkl <gkvoelkl@nelson-games.de>
 Build-Depends:
  debhelper-compat (= 12),
+ dh-sequence-python3,
+ dh-python,
+ python3-all-dev,
+ python3-setuptools,
 Standards-Version: 4.5.1
 
 Package: python3-sonic
