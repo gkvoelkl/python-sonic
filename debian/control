@@ -1,0 +1,20 @@
+Source: python3-sonic
+Section: python
+Priority: optional
+Maintainer: gkvoelkl <gkvoelkl@nelson-games.de>
+Build-Depends:
+ debhelper-compat (= 12),
+Standards-Version: 4.5.1
+
+Package: python3-sonic
+Architecture: all
+Depends:
+ ${misc:Depends},
+ python3 (>= 3.3~),
+ python3-osc,
+ python3:any,
+ sonic-pi,
+Homepage: https://github.com/gkvoelkl/python-sonic
+Description: Programming Music with Sonic Pi or Supercollider
+ Python-Sonic is a simple Python interface for Sonic Pi, which is a real great
+ music software created by Sam Aaron (http://sonic-pi.net).
