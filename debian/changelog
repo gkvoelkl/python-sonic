@@ -1,0 +1,5 @@
+python3-sonic (0.4.1-1) buster; urgency=medium
+
+  * Debianize 0.4.1
+
+ -- gkvoelkl <gkvoelkl@nelson-games.de>  Wed, 12 May 2021 17:24:02 +0000
