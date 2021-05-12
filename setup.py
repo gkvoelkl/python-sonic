@@ -15,11 +15,8 @@ requirements = [
     'python-osc',
 ]
 
-setup_requirements = [
-    'pytest-runner',
-]
-
 test_requirements = [
+    'pytest-runner',
     'pytest',
 ]
 
@@ -29,8 +26,7 @@ setup(
     version='0.4.1',
     description='Programming Music with Sonic Pi or Supercollider',
     long_description=long_description,
-#    long_description_content_type='text/x-rst',
-    long_description_content_type='text/plain',
+    long_description_content_type='text/x-rst',
     url='https://github.com/gkvoelkl/python-sonic',
     author='gkvoelkl',
     author_email='gkvoelkl@nelson-games.de',
@@ -68,5 +64,4 @@ setup(
     ],
     test_suite='tests',
     tests_require=test_requirements,
-    setup_requires=setup_requirements,
 )
