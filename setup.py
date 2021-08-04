@@ -8,7 +8,7 @@ from os import path
 here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file
-with open(path.join(here, 'README.txt'), encoding='utf-8') as f:
+with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 requirements = [
@@ -29,8 +29,7 @@ setup(
     version='0.4.1',
     description='Programming Music with Sonic Pi or Supercollider',
     long_description=long_description,
-#    long_description_content_type='text/x-rst',
-    long_description_content_type='text/plain',
+    long_description_content_type='text/x-rst',
     url='https://github.com/gkvoelkl/python-sonic',
     author='gkvoelkl',
     author_email='gkvoelkl@nelson-games.de',
