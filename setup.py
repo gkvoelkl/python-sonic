@@ -15,8 +15,11 @@ requirements = [
     'python-osc',
 ]
 
-test_requirements = [
+setup_requirements = [
     'pytest-runner',
+]
+
+test_requirements = [
     'pytest',
 ]
 
@@ -64,4 +67,5 @@ setup(
     ],
     test_suite='tests',
     tests_require=test_requirements,
+    setup_requires=setup_requirements,
 )
