@@ -60,7 +60,7 @@ Communication
   ports. One port is an internal *Sonic Pi* port and could be changed.
 | For older *Sonic Pi* Version you have to set the ports explicitly
 
-.. code:: ipython3
+.. code-block:: python
 
     from psonic import *
     set_server_parameter('127.0.0.1',4557,4559)
@@ -70,19 +70,19 @@ Examples
 
 Many of the examples are inspired from the help menu in *Sonic Pi*.
 
-.. code:: ipython3
+.. code-block:: python
 
     from psonic import *
 
 The first sound
 
-.. code:: ipython3
+.. code-block:: python
 
     play(70) #play MIDI note 70
 
 Some more notes
 
-.. code:: ipython3
+.. code-block:: python
 
     play(72)
     sleep(1)
@@ -92,7 +92,7 @@ Some more notes
 
 In more tratitional music notation
 
-.. code:: ipython3
+.. code-block:: python
 
     play(C5)
     sleep(0.5)
@@ -102,7 +102,7 @@ In more tratitional music notation
 
 Play sharp notes like *F#* or dimished ones like *Eb*
 
-.. code:: ipython3
+.. code-block:: python
 
     play(Fs5)
     sleep(0.5)
@@ -111,7 +111,7 @@ Play sharp notes like *F#* or dimished ones like *Eb*
 Play louder (parameter amp) or from a different direction (parameter
 pan)
 
-.. code:: ipython3
+.. code-block:: python
 
     play(72,amp=2)
     sleep(0.5)
@@ -119,7 +119,7 @@ pan)
 
 Different synthesizer sounds
 
-.. code:: ipython3
+.. code-block:: python
 
     use_synth(SAW)
     play(38)
@@ -132,46 +132,46 @@ Different synthesizer sounds
 
 ADSR *(Attack, Decay, Sustain and Release)* Envelope
 
-.. code:: ipython3
+.. code-block:: python
 
     play (60, attack=0.5, decay=1, sustain_level=0.4, sustain=2, release=0.5) 
     sleep(4)
 
 Play some samples
 
-.. code:: ipython3
+.. code-block:: python
 
     sample(AMBI_LUNAR_LAND, amp=0.5)
 
-.. code:: ipython3
+.. code-block:: python
 
     sample(LOOP_AMEN,pan=-1)
     sleep(0.877)
     sample(LOOP_AMEN,pan=1)
 
-.. code:: ipython3
+.. code-block:: python
 
     sample(LOOP_AMEN,rate=0.5)
 
-.. code:: ipython3
+.. code-block:: python
 
     sample(LOOP_AMEN,rate=1.5)
 
-.. code:: ipython3
+.. code-block:: python
 
     sample(LOOP_AMEN,rate=-1)#back
 
-.. code:: ipython3
+.. code-block:: python
 
     sample(DRUM_CYMBAL_OPEN,attack=0.01,sustain=0.3,release=0.1)
 
-.. code:: ipython3
+.. code-block:: python
 
     sample(LOOP_AMEN,start=0.5,finish=0.8,rate=-0.2,attack=0.3,release=1)
 
 Play some random notes
 
-.. code:: ipython3
+.. code-block:: python
 
     import random
     
@@ -179,7 +179,7 @@ Play some random notes
         play(random.randrange(50, 100))
         sleep(0.5)
 
-.. code:: ipython3
+.. code-block:: python
 
     for i in range(3):
         play(random.choice([C5,E5,G5]))
@@ -187,7 +187,7 @@ Play some random notes
 
 Sample slicing
 
-.. code:: ipython3
+.. code-block:: python
 
     from psonic import *
     
@@ -201,7 +201,7 @@ Sample slicing
 
 An infinite loop and if
 
-.. code:: ipython3
+.. code-block:: python
 
     while True:
       if one_in(2):
@@ -238,7 +238,7 @@ An infinite loop and if
 
 If you want to hear more than one sound at a time, use Threads.
 
-.. code:: ipython3
+.. code-block:: python
 
     import random
     from psonic import *
@@ -285,7 +285,7 @@ If you want to hear more than one sound at a time, use Threads.
 Every function *bass_sound* and *snare_sound* have its own thread. Your
 can hear them running.
 
-.. code:: ipython3
+.. code-block:: python
 
     from psonic import *
     from threading import Thread, Condition
@@ -344,7 +344,7 @@ you can use *Condition*. One function sends a message with
 
 More simple with decorator \_\_@in_thread_\_
 
-.. code:: ipython3
+.. code-block:: python
 
     from psonic import *
     from random import choice
@@ -385,7 +385,7 @@ More simple with decorator \_\_@in_thread_\_
     Press Enter to continue... 
 
 
-.. code:: ipython3
+.. code-block:: python
 
     from psonic import *
     
@@ -411,7 +411,7 @@ More simple with decorator \_\_@in_thread_\_
 
 Play a list of notes
 
-.. code:: ipython3
+.. code-block:: python
 
     from psonic import *
     
@@ -422,7 +422,7 @@ Play a list of notes
 
 Play chords
 
-.. code:: ipython3
+.. code-block:: python
 
     play(chord(E4, MINOR)) 
     sleep(1)
@@ -435,7 +435,7 @@ Play chords
 
 Play arpeggios
 
-.. code:: ipython3
+.. code-block:: python
 
     play_pattern( chord(E4, 'm7')) 
     play_pattern_timed( chord(E4, 'm7'), 0.25) 
@@ -443,7 +443,7 @@ Play arpeggios
 
 Play scales
 
-.. code:: ipython3
+.. code-block:: python
 
     play_pattern_timed(scale(C3, MAJOR), 0.125, release = 0.1) 
     play_pattern_timed(scale(C3, MAJOR, num_octaves = 2), 0.125, release = 0.1) 
@@ -453,7 +453,7 @@ The function *scale* returns a list with all notes of a scale. So you
 can use list methodes or functions. For example to play arpeggios
 descending or shuffeld.
 
-.. code:: ipython3
+.. code-block:: python
 
     import random
     from psonic import *
@@ -470,11 +470,11 @@ descending or shuffeld.
 
 
 
-.. code:: ipython3
+.. code-block:: python
 
     s.reverse()
 
-.. code:: ipython3
+.. code-block:: python
 
     
     play_pattern_timed(s, 0.125, release = 0.1)
@@ -488,7 +488,7 @@ One of the best in SONIC PI is the *Live Loop*. While a loop is playing
 music you can change it and hear the change. Let’s try it in Python,
 too.
 
-.. code:: ipython3
+.. code-block:: python
 
     from psonic import *
     from threading import Thread
@@ -523,21 +523,21 @@ too.
 
 Now change the function *my_loop* und you can hear it.
 
-.. code:: ipython3
+.. code-block:: python
 
     def my_loop():
       use_synth(TB303)
       play (60, release= 0.3)
       sleep (0.25)
 
-.. code:: ipython3
+.. code-block:: python
 
     def my_loop():
       use_synth(TB303)
       play (chord(E3, MINOR), release= 0.3)
       sleep(0.5)
 
-.. code:: ipython3
+.. code-block:: python
 
     def my_loop():
         use_synth(TB303)
@@ -550,7 +550,7 @@ Restart
 
 Now with two live loops which are synch.
 
-.. code:: ipython3
+.. code-block:: python
 
     from psonic import *
     from threading import Thread, Condition
@@ -601,13 +601,13 @@ Now with two live loops which are synch.
 
 
 
-.. code:: ipython3
+.. code-block:: python
 
     def loop_foo():
       play (A4, release = 0.5)
       sleep (0.5)
 
-.. code:: ipython3
+.. code-block:: python
 
     def loop_bar():
       sample (DRUM_HEAVY_KICK)
@@ -616,7 +616,7 @@ Now with two live loops which are synch.
 If would be nice if we can stop the loop with a simple command. With
 stop event it works.
 
-.. code:: ipython3
+.. code-block:: python
 
     from psonic import *
     from threading import Thread, Condition, Event
@@ -670,13 +670,13 @@ stop event it works.
 
 
 
-.. code:: ipython3
+.. code-block:: python
 
     stop_event.set()
 
 More complex live loops
 
-.. code:: ipython3
+.. code-block:: python
 
     sc = Ring(scale(E3, MINOR_PENTATONIC))
     
@@ -693,7 +693,7 @@ More complex live loops
 
 Now a simple structure with four live loops
 
-.. code:: ipython3
+.. code-block:: python
 
     import random
     from psonic import *
@@ -765,28 +765,28 @@ Now a simple structure with four live loops
 
 After starting the loops you can change them
 
-.. code:: ipython3
+.. code-block:: python
 
     def live_1():
         sample(BD_HAUS,amp=2)
         sleep(0.5)
         pass
 
-.. code:: ipython3
+.. code-block:: python
 
     def live_2():
         #sample(AMBI_CHOIR, rate=0.4)
         #sleep(1)
         pass
 
-.. code:: ipython3
+.. code-block:: python
 
     def live_3():
         use_synth(TB303)
         play(E2, release=4,cutoff=120,cutoff_attack=1)
         sleep(4)
 
-.. code:: ipython3
+.. code-block:: python
 
     def live_4():
         notes = scale(E3, MINOR_PENTATONIC, num_octaves=2)
@@ -796,14 +796,14 @@ After starting the loops you can change them
 
 And stop.
 
-.. code:: ipython3
+.. code-block:: python
 
     stop_event.set()
 
 Creating Sound
 ~~~~~~~~~~~~~~
 
-.. code:: ipython3
+.. code-block:: python
 
     from psonic import *
     
@@ -811,13 +811,13 @@ Creating Sound
     synth(SQUARE, note=D4)
     synth(TRI, note=D4, amp=0.4)
 
-.. code:: ipython3
+.. code-block:: python
 
     detune = 0.7
     synth(SQUARE, note = E4)
     synth(SQUARE, note = E4+detune)
 
-.. code:: ipython3
+.. code-block:: python
 
     detune=0.1 # Amplitude shaping
     synth(SQUARE, note = E2, release = 2)
@@ -831,7 +831,7 @@ Next Step
 
 Using FX *Not implemented yet*
 
-.. code:: ipython3
+.. code-block:: python
 
     from psonic import *
     
@@ -839,7 +839,7 @@ Using FX *Not implemented yet*
         synth(PROPHET,note=E2,release=8,cutoff=80)
         synth(PROPHET,note=E2+4,release=8,cutoff=80)
 
-.. code:: ipython3
+.. code-block:: python
 
     with Fx(SLICER, phase=0.125, probability=0.6,prob_pos=1):
         synth(TB303, note=E2, cutoff_attack=8, release=8)
@@ -851,14 +851,14 @@ OSC Communication (Sonic Pi Ver. 3.x or better)
 
 In Sonic Pi version 3 or better you can work with messages.
 
-.. code:: ipython3
+.. code-block:: python
 
     from psonic import *
 
 First you need a programm in the Sonic Pi server that receives messages.
 You can write it in th GUI or send one with Python.
 
-.. code:: ipython3
+.. code-block:: python
 
     run("""live_loop :foo do
       use_real_time
@@ -868,11 +868,11 @@ You can write it in th GUI or send one with Python.
 
 Now send a message to Sonic Pi.
 
-.. code:: ipython3
+.. code-block:: python
 
     send_message('/trigger/prophet', 70, 100, 8)
 
-.. code:: ipython3
+.. code-block:: python
 
     stop()
 
@@ -881,11 +881,11 @@ Recording
 
 With python-sonic you can record wave files.
 
-.. code:: ipython3
+.. code-block:: python
 
     from psonic import *
 
-.. code:: ipython3
+.. code-block:: python
 
     # start recording
     start_recording()
@@ -899,7 +899,7 @@ With python-sonic you can record wave files.
     play(chord(E4, DOM7))
     sleep(1)
 
-.. code:: ipython3
+.. code-block:: python
 
     # stop recording
     stop_recording
@@ -913,7 +913,7 @@ With python-sonic you can record wave files.
 
 
 
-.. code:: ipython3
+.. code-block:: python
 
     # save file
     save_recording('/Volumes/jupyter/python-sonic/test.wav')
@@ -921,11 +921,11 @@ With python-sonic you can record wave files.
 More Examples
 -------------
 
-.. code:: ipython3
+.. code-block:: python
 
     from psonic import *
 
-.. code:: ipython3
+.. code-block:: python
 
     #Inspired by Steve Reich Clapping Music
     
