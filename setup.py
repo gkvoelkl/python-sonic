@@ -1,7 +1,7 @@
 from setuptools import setup
 # To use a consistent encoding
 # python setup.py sdist bdist_wheel
-# twine upload dist/*
+# python -m twine upload dist/*
 from codecs import open
 from os import path
 
@@ -26,7 +26,7 @@ test_requirements = [
 
 setup(
     name='python-sonic',
-    version='0.4.2',
+    version='0.4.3',
     description='Programming Music with Sonic Pi or Supercollider',
     long_description=long_description,
     url='https://github.com/gkvoelkl/python-sonic',
