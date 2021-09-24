@@ -1,17 +1,19 @@
 """SonicPi synth server"""
 
-import time
+import time, threading
 from pythonosc import osc_message_builder  # osc support
 from pythonosc import udp_client
 from .synthesizers import BEEP
 
 ## Module attributes ##
-_current_synth = BEEP
+_current_synths = {
+    threading.get_ident(): BEEP
+}
 
 ## Module methodes ##
 def use_synth(synth):
-    global _current_synth
-    _current_synth = synth
+    thread_id = threading.get_ident()
+    _current_synths[thread_id] = synth
 
 
 ## Compound classes ##
@@ -92,6 +94,8 @@ class SonicPi(SonicPiCommon):
         self._init_client()
 
     def play(self, command):
+        thread_id = threading.get_ident()
+        _current_synth = _current_synths.get(thread_id, BEEP)
         command = 'use_synth :{0}\n'.format(_current_synth.name) + command
         self.send(command)
 
