@@ -30,7 +30,8 @@ def synth(name, note=None, attack=None, decay=None,
 def play(note, attack=None, decay=None,
     sustain_level=None, sustain=None, release=None,
     cutoff=None, cutoff_attack=None, amp=None, pan=None):
-
+    
+    if note <= 0: return
     arguments = locals()
     arguments.pop('note')
     parameters = ['{0}: {1}'.format(k, v) for k, v in arguments.items() if v is not None]
@@ -42,7 +43,9 @@ def play(note, attack=None, decay=None,
     _debug('play command={}'.format(command))
     synth_server.play(command)
 
-def play_pattern_timed(notes, times, release=None):
+def play_pattern_timed(notes, times, attack=None, decay=None,
+    sustain_level=None, sustain=None, release=None,
+    cutoff=None, cutoff_attack=None, amp=None, pan=None):
     """play notes
     :param notes:
     :param times:
@@ -51,10 +54,12 @@ def play_pattern_timed(notes, times, release=None):
     if not type(notes) is list: notes = [notes]
     if not type(times) is list: times = [times]
 
-    for t in times:
-        for i in notes:
-            play(i, release=release)
-            sleep(t)
+    for i, note in enumerate(notes):
+        play(note, attack=attack, decay=decay,
+            sustain_level=sustain_level, sustain=sustain, release=release,
+            cutoff=cutoff, cutoff_attack=cutoff_attack, amp=amp, pan=pan)
+        t = times[i % len(times)]
+        sleep(t)
 
 def play_pattern(notes):
     """:param notes:
@@ -63,7 +68,7 @@ def play_pattern(notes):
     play_pattern_timed(notes, 1)
 
 def sample(sample, rate=None, attack=None, sustain=None,
-	   release=None, beat_stretch=None, start=None,
+       release=None, beat_stretch=None, start=None,
            finish=None, amp=None, pan=None):
 
     arguments = locals()
@@ -87,6 +92,15 @@ def sleep(duration):
     """
     synth_server.sleep(duration)
     _debug('sleep', duration)
+
+def sleep_until(wake):
+    """the same as time.sleep
+    :param duration:
+    :return:
+    """
+    duration = wake - synth_server.get_time()
+    if duration > 0:
+        sleep(duration)
 
 def sample_duration(sample):
     """Returns the duration of the sample (in seconds)

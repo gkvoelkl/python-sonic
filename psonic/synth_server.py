@@ -9,9 +9,7 @@ from .synthesizers import BEEP
 _current_synths = {
     threading.get_ident(): BEEP
 }
-_current_bpms = {
-    threading.get_ident(): 60
-}
+_current_bpm = 60
 
 ## Module methodes ##
 def use_synth(synth):
@@ -19,8 +17,8 @@ def use_synth(synth):
     _current_synths[thread_id] = synth
 
 def use_bpm(bpm):
-    thread_id = threading.get_ident()
-    _current_bpms[thread_id] = bpm
+    global _current_bpm
+    _current_bpm = bpm
 
 ## Compound classes ##
 class SonicPiCommon:
@@ -29,6 +27,7 @@ class SonicPiCommon:
 
     def __init__(self):
         self.udp_ip = self.UDP_IP
+        self.start_time = time.time()
 
     def set_parameter(self, udp_ip=""):
         if udp_ip == "":
@@ -40,12 +39,13 @@ class SonicPiCommon:
         pass
 
     def sleep(self, duration):
-        thread_id = threading.get_ident()
-        _current_bpm = _current_bpms.get(thread_id, 60)
-        time.sleep(60 / float(_current_bpm))
+        time.sleep(duration * 60.0 / _current_bpm)
 
     def sample(self, command):
         self.send(command)
+
+    def get_time(self):
+        return (time.time() - self.start_time) * _current_bpm / 60.0
 
 ## Ports could be find in home ./sonic-pi/log/server-output.log
 #     Version        3.2.0
@@ -104,7 +104,6 @@ class SonicPi(SonicPiCommon):
     def play(self, command):
         thread_id = threading.get_ident()
         _current_synth = _current_synths.get(thread_id, BEEP)
-        _current_bpm = _current_bpms.get(thread_id, 60)
         command = 'use_synth :{}\nuse_bpm {}\n{}'.format(_current_synth.name, _current_bpm, command)
         self.send(command)
 
