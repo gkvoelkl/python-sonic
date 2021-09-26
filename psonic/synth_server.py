@@ -9,12 +9,18 @@ from .synthesizers import BEEP
 _current_synths = {
     threading.get_ident(): BEEP
 }
+_current_bpms = {
+    threading.get_ident(): 60
+}
 
 ## Module methodes ##
 def use_synth(synth):
     thread_id = threading.get_ident()
     _current_synths[thread_id] = synth
 
+def use_bpm(bpm):
+    thread_id = threading.get_ident()
+    _current_bpms[thread_id] = bpm
 
 ## Compound classes ##
 class SonicPiCommon:
@@ -34,7 +40,9 @@ class SonicPiCommon:
         pass
 
     def sleep(self, duration):
-        time.sleep(duration)
+        thread_id = threading.get_ident()
+        _current_bpm = _current_bpms.get(thread_id, 60)
+        time.sleep(60 / float(_current_bpm))
 
     def sample(self, command):
         self.send(command)
@@ -96,7 +104,8 @@ class SonicPi(SonicPiCommon):
     def play(self, command):
         thread_id = threading.get_ident()
         _current_synth = _current_synths.get(thread_id, BEEP)
-        command = 'use_synth :{0}\n'.format(_current_synth.name) + command
+        _current_bpm = _current_bpms.get(thread_id, 60)
+        command = 'use_synth :{}\nuse_bpm {}\n{}'.format(_current_synth.name, _current_bpm, command)
         self.send(command)
 
     def synth(self, command):

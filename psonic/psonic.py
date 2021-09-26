@@ -7,6 +7,7 @@ from .internals.scales import _SCALE_MODE
 from .synth_server import (
     SonicPi,
     use_synth,
+    use_bpm,
 )
 
 __debug = False
