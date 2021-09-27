@@ -1,18 +1,24 @@
 """SonicPi synth server"""
 
-import time
+import time, threading
 from pythonosc import osc_message_builder  # osc support
 from pythonosc import udp_client
 from .synthesizers import BEEP
 
 ## Module attributes ##
-_current_synth = BEEP
+_current_synths = {
+    threading.get_ident(): BEEP
+}
+_current_bpm = 60
 
 ## Module methodes ##
 def use_synth(synth):
-    global _current_synth
-    _current_synth = synth
+    thread_id = threading.get_ident()
+    _current_synths[thread_id] = synth
 
+def use_bpm(bpm):
+    global _current_bpm
+    _current_bpm = bpm
 
 ## Compound classes ##
 class SonicPiCommon:
@@ -21,6 +27,7 @@ class SonicPiCommon:
 
     def __init__(self):
         self.udp_ip = self.UDP_IP
+        self.start_time = time.time()
 
     def set_parameter(self, udp_ip=""):
         if udp_ip == "":
@@ -32,10 +39,13 @@ class SonicPiCommon:
         pass
 
     def sleep(self, duration):
-        time.sleep(duration)
+        time.sleep(duration * 60.0 / _current_bpm)
 
     def sample(self, command):
         self.send(command)
+
+    def get_time(self):
+        return (time.time() - self.start_time) * _current_bpm / 60.0
 
 ## Ports could be find in home ./sonic-pi/log/server-output.log
 #     Version        3.2.0
@@ -92,7 +102,9 @@ class SonicPi(SonicPiCommon):
         self._init_client()
 
     def play(self, command):
-        command = 'use_synth :{0}\n'.format(_current_synth.name) + command
+        thread_id = threading.get_ident()
+        _current_synth = _current_synths.get(thread_id, BEEP)
+        command = 'use_synth :{}\nuse_bpm {}\n{}'.format(_current_synth.name, _current_bpm, command)
         self.send(command)
 
     def synth(self, command):
