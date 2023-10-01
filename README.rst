@@ -104,6 +104,12 @@ This can be automated by using the function `set_server_parameter_from_log`
 
 Note if the `set_server_parameter` functions are not used, a default connection is created which will not work.
 
+There is a simple example file `psonic_example.py` which you can run to check that things work. First open sonic-pi, then run the following:
+
+$ python psonic_example.py
+
+and a note should be played.
+
 Examples
 --------
 
