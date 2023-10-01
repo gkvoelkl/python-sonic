@@ -1,3 +1,5 @@
+import os
+import re
 import random
 from .samples import Sample
 from .synthesizers import SAW
@@ -180,9 +182,33 @@ def save_recording(name):
 
 synth_server = SonicPi()
 
-def set_server_parameter(udp_ip="", udp_port=-1, udp_port_osc_message=-1):
-    synth_server.set_parameter(udp_ip, udp_port, udp_port_osc_message)
+def set_server_parameter(udp_ip, token, udp_port=-1, udp_port_osc_message=-1):
+    synth_server.set_parameter(udp_ip, token, udp_port, udp_port_osc_message)
 
+def set_server_parameter_from_log(udp_ip, log_file=None):
+    if log_file is None:
+        # Automatically find the log file
+        home = os.path.expanduser("~")
+        log_file = os.path.join(home, ".sonic-pi", "log", "spider.log")
+    print(f"Reading Parameters From Log File: {log_file}")
+
+    with open(log_file, 'r') as f:
+        text = f.read()
+
+    # Use regular expressions to extract the values
+    token_match = re.search(r'Token: (-?\d+)', text)
+    server_port_match = re.search(r':server_port=>(\d+)', text)
+    osc_cues_port_match = re.search(r':osc_cues_port=>(\d+)', text)
+
+    token = int(token_match.group(1)) if token_match else None
+    udp_port = int(server_port_match.group(1)) if server_port_match else None
+    udp_port_osc_message = int(osc_cues_port_match.group(1)) if osc_cues_port_match else None
+
+    if token and udp_port and udp_port_osc_message:
+        print(f"Reading Parameters Succeeded. ip: {udp_ip}, token: \"{token}\", server_port: \"{udp_port}\", osc_port: {udp_port_osc_message}")
+        synth_server.set_parameter(udp_ip, token, udp_port, udp_port_osc_message)
+    else:
+        raise RuntimeError(f"Reading Parameters Failed. token: {token}, server_port: {udp_port}, osc_port: {udp_port_osc_message}")
 
 def _debug(*args):
     if __debug: print(args)
