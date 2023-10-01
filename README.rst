@@ -29,6 +29,11 @@ $ pip install python-sonic
 
 That should work.
 
+For local development you might want to locally install using 
+
+::
+    $ pip install -e .
+
 Limitations
 -----------
 
@@ -62,8 +67,8 @@ Communication
 -------------
 
 The API *python-sonic* communications with *Sonic Pi* over UDP and two
-  ports. One port is an internal *Sonic Pi* GUI port and the second is the 
-  external OSC cue port.
+ports. One port is an internal *Sonic Pi* GUI port and the second is the 
+external OSC cue port.
 
 For >v4 a Token is needed to communicate with Sonic Pi. This token is generated
 randomly at runtime when Sonic-Pi is started. The Token is extracted from the sonic-pi log files. 
@@ -78,7 +83,7 @@ using the Token as the first argument in the message. The Token is automatically
 
 
 These values are found from the file `~/.sonic-pi/log/spider.log`
-.. code-block:: text
+::
     Sonic Pi Spider Server booting...
     The time is 2023-10-01 11:01:41 +0100
     Using primary protocol: udp
