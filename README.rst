@@ -7,6 +7,9 @@ great music software created by Sam Aaron (http://sonic-pi.net).
 At the moment Python-Sonic works with Sonic Pi. It is planned, that it
 will work with Supercollider, too.
 
+This version supports Sonic Pi versions > 4 when OSC run-code security
+was added. 
+
 If you like it, use it. If you have some suggestions, tell me
 (gkvoelkl@nelson-games.de).
 
@@ -25,6 +28,10 @@ Or try
 $ pip install python-sonic
 
 That should work.
+
+For local development you might want to locally install using 
+
+$ pip install -e .
 
 Limitations
 -----------
@@ -52,18 +59,56 @@ Changelog
 +--------+-------------------------------------------------------------+
 | 0.4.0  | Changes communication ports and recording                   |
 +--------+-------------------------------------------------------------+
+| 0.4.4  | Enables GUI Token                                           |
++--------+-------------------------------------------------------------+
 
 Communication
 -------------
 
-| The API *python-sonic* communications with *Sonic Pi* over UDP and two
-  ports. One port is an internal *Sonic Pi* port and could be changed.
-| For older *Sonic Pi* Version you have to set the ports explicitly
+The API *python-sonic* communications with *Sonic Pi* over UDP and two
+ports. One port is an internal *Sonic Pi* GUI port and the second is the 
+external OSC cue port.
+
+For >v4 a Token is needed to communicate with Sonic Pi. This token is generated
+randomly at runtime when Sonic-Pi is started. The Token is extracted from the sonic-pi log files. 
+Similarly, the GUI udp port is now randomised at start and must be read from the log file too. 
+In order to play notes (and not just send OSC cues), a connection must be made to the GUI udp port 
+using the Token as the first argument in the message. The Token is automatically used on send. 
 
 .. code-block:: python
 
     from psonic import *
-    set_server_parameter('127.0.0.1',4557,4559)
+    set_server_parameter('127.0.0.1', -2005799440, 30129, 4560)
+
+
+These values are found from the file `~/.sonic-pi/log/spider.log`
+::
+    Sonic Pi Spider Server booting...
+    The time is 2023-10-01 11:01:41 +0100
+    Using primary protocol: udp
+    Detecting port numbers...
+    Ports: {:server_port=>30129, :gui_port=>30130, :scsynth_port=>30131, :scsynth_send_port=>30131, :osc_cues_port=>4560, :tau_port=>30132, :listen_to_tau_port=>30136}
+    Token: -2005799440
+    Opening UDP Server to listen to GUI on port: 30129
+    Spider - Pulling in modules...
+    Spider - Starting Runtime Server
+    ...
+
+This can be automated by using the function `set_server_parameter_from_log`
+
+.. code-block:: python
+
+    from psonic import *
+    set_server_parameter_from_log('127.0.0.1')
+    set_server_parameter_from_log('127.0.0.1', "path-to-log-file")
+
+Note if the `set_server_parameter` functions are not used, a default connection is created which will not work.
+
+There is a simple example file `psonic_example.py` which you can run to check that things work. First open sonic-pi, then run the following:
+
+$ python psonic_example.py
+
+and a note should be played.
 
 Examples
 --------
