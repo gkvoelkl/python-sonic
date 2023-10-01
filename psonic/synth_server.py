@@ -68,16 +68,14 @@ class SonicPi(SonicPiCommon):
         self._init_client()
 
     def _init_client(self):
-        self.client = udp_client.SimpleUDPClient(
+        self.client = udp_client.UDPClient(
             self.udp_ip,
             self.udp_port
         )
-        self.client.send_message("/run-code", [self.token, "play 70"])
-        self.client_for_messages = udp_client.SimpleUDPClient(
+        self.client_for_messages = udp_client.UDPClient(
             self.udp_ip,
             self.udp_port_osc_message
         )
-        print(f"Setup Clients: {self.udp_ip}:{self.udp_port}")
 
     def set_parameter(self, udp_ip = "", token = "", udp_port=-1, udp_port_osc_message=-1):
         super().set_parameter(udp_ip)
