@@ -31,8 +31,7 @@ That should work.
 
 For local development you might want to locally install using 
 
-::
-    $ pip install -e .
+$ pip install -e .
 
 Limitations
 -----------
