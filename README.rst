@@ -21,13 +21,7 @@ Installation
 -  Then Sonic Pi (https://sonic-pi.net) - That makes the sound
 -  Modul python-osc (https://pypi.python.org/pypi/python-osc) -
    Connection between Python and Sonic Pi Server
--  And this modul python-sonic - simply copy the source
-
-Or try
-
-$ pip install python-sonic
-
-That should work.
+-  Add the module `python-sonic` - simply copy the source, or try `pip install python-sonic` That should work.
 
 For local development you might want to locally install using 
 
