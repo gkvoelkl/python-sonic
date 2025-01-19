@@ -37,16 +37,11 @@ class SonicPiCommon:
     def sample(self, command):
         self.send(command)
 
-## Ports could be find in home ./sonic-pi/log/server-output.log
-#     Version        3.2.0
-# Listen port:       51235  4557
-# Scsynth port:      51237  4556
-# Scsynth send port: 51237  4556
-# OSC cues port:      4560  4559
-# Erlang port:       51240  4560
-# OSC MIDI out port: 51238  4561
-# OSC MIDI in port:  51239  4562
-# Websocket port:    51241
+## Sonic Pi version 4.X: Ports can be found in 
+# Windows: C:/Users/<User>/.sonic-pi/log/spider.log
+# Linux: ~/.sonic-pi/log/spider.log
+# Both the server_port and Token are required
+# Default OSC Cues Port is still 4560
 
 ## Connection classes ##
 class SonicPi(SonicPiCommon):
@@ -57,7 +52,6 @@ class SonicPi(SonicPiCommon):
 
     #UDP_PORT_OSC_MESSAGE = 4559
     UDP_PORT_OSC_MESSAGE = 4560
-    GUI_ID = 'SONIC_PI_PYTHON'
 
     RUN_COMMAND = "/run-code"
     STOP_COMMAND = "/stop-all-jobs"
@@ -69,6 +63,7 @@ class SonicPi(SonicPiCommon):
         super().__init__()
         self.udp_port = self.UDP_PORT
         self.udp_port_osc_message = self.UDP_PORT_OSC_MESSAGE
+        self.token=None
 
         self._init_client()
 
@@ -82,17 +77,18 @@ class SonicPi(SonicPiCommon):
             self.udp_port_osc_message
         )
 
-    def set_parameter(self, udp_ip = "", udp_port=-1, udp_port_osc_message=-1):
+    def set_parameter(self, udp_ip = "", token = "", udp_port=-1, udp_port_osc_message=-1):
         super().set_parameter(udp_ip)
         if udp_port == -1: udp_port = self.UDP_PORT
         self.udp_port = udp_port
+        self.token=token
         if udp_port_osc_message == -1: udp_port_osc_message = self.UDP_PORT_OSC_MESSAGE
         self.udp_port_osc_message = udp_port_osc_message
 
         self._init_client()
 
     def play(self, command):
-        command = 'use_synth :{0}\n'.format(_current_synth.name) + command
+        command = f'use_synth :{_current_synth.name}\n{command}'
         self.send(command)
 
     def synth(self, command):
@@ -124,7 +120,9 @@ class SonicPi(SonicPiCommon):
 
     def send_command(self, address, argument=''):
         msg = osc_message_builder.OscMessageBuilder(address=address)
-        msg.add_arg('SONIC_PI_PYTHON')
+        if self.token is None:
+            raise RuntimeError("No token specified, please set token from file or manually before sending a command")
+        msg.add_arg(self.token)
         if argument != "":
             msg.add_arg(argument)
         msg = msg.build()
